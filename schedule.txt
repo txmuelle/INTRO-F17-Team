@@ -1,0 +1,91 @@
+Week	Date		Topic (SUBJECT of CHANGE!)
+1	Mo 20.02.2017
+			Intro
+			Build & Debug
+	Tu 21.02.2017
+			VCS
+			Git and Clients
+2	Mo 27.02.2017
+			CARNEVAL
+	Tu 28.02.2017
+			Systems and Realtime
+			Processor Expert
+
+			Project Structure
+			LED
+3	Mo 06.03.2017
+			Preprocessor
+			Includes
+			Synchronization
+	Tu 07.03.2017
+			Interrupts
+			ARM Cortex
+			Robo Assembly
+4	Mo 13.03.2017
+			***SELF STUDY*** (Robots)
+	Tu 14.03.2017
+			***SELF STUDY*** (Robots)
+5	Mo 20.03.2017
+			Events
+			Statemachine
+			Clock & Timer
+	Tu 21.03.2017
+			Keys
+			Console
+6	Mo 27.03.2017
+			Trigger, Buzzer	
+			Debounce
+	Tu 28.03.2017
+			RTOS
+			Kernel Awareness
+7	Mo 03.04.2017
+			FreeRTOS, Architecture 
+			Kernel Control 
+	Tu 04.04.2017
+			Tasks
+			Kernel Awareness, SystemView
+8	Mo 10.04.2017
+			Hooks
+			Heap
+	Tu 11.04.2017
+			Shell
+			Queues
+9	Mo 17.04.2017
+			***EASTER***
+	Tu 18.04.2017
+			***EASTER***
+10	Mo 24.04.2017
+			Sem & Mutex
+	Tu 25.04.2017
+			Reflectance
+			NVMC
+11	Mo 01.05.2017
+			Reentrancy, CS, Mutex, Sem
+			Motor Signals
+	Tu 02.05.2017
+			Position Encoder
+			Quadrature Encoder
+12	Mo 08.05.2017
+			Tacho
+			Closed Loop Control
+	Tu 09.05.2017
+			Line Following
+			Turning
+12	Mo 15.05.2017
+			Radio
+			Remote Control
+	Tu 16.05.2017
+			LCD
+			Menus
+13	Mo 22.05.2017
+			Working on Bots
+			>>> LAST DAY FOR ADMISSION
+	Tu 23.05.2017
+			Working on Bots
+14	Mo 29.05.2017
+			Q&A
+			Working on Bots
+	Tu 30.05.2017
+			***Competition***
+			Return Lab material
+
