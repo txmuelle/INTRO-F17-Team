@@ -1,0 +1,8 @@
+- Each student provides a 5-10 minute recap (summary)
+  - Group of two
+  - learning material from a week ago
+  - or: your own problem/solution in the context of the course
+  - check with your teacher upfront on content
+- provide your material including at least 3 (good!) quiz questions
+  - make sure your names are in the material noted (title slide)
+  - see example from previous semester
