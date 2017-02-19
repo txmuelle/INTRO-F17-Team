@@ -1,1 +1,1 @@
-this folder contains the scriptum (not uploaded yet).
+This folder contains the add-ons to the scriptum on ILIAS.
