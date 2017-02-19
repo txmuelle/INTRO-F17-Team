@@ -10,10 +10,9 @@ Week	Date		Topic (SUBJECT of CHANGE!)
 	Tu 28.02.2017
 			Systems and Realtime
 			Processor Expert
-
 			Project Structure
-			LED
 3	Mo 06.03.2017
+			LED
 			Preprocessor
 			Includes
 			Synchronization
