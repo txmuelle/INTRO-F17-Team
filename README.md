@@ -1,2 +1,0 @@
-# INTRO_FS2017
-Repository for INTRO FS2017
