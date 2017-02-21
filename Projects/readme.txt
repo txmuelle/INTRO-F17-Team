@@ -1,1 +1,0 @@
-This folder contains the INTRO master template projects.
