@@ -90,8 +90,6 @@
 #include "Rx1.h"
 #include "USB0.h"
 #include "TmDt1.h"
-#include "Bit1.h"
-#include "BitIoLdd18.h"
 #include "TMOUT1.h"
 #include "HF1.h"
 #include "CS1.h"
