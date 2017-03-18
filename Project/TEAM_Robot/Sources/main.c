@@ -36,8 +36,6 @@
 #include "BitIoLdd2.h"
 #include "SW1.h"
 #include "BitIoLdd3.h"
-#include "AS1.h"
-#include "ASerialLdd3.h"
 #include "CLS1.h"
 #include "FRTOS1.h"
 #include "RTOSCNTRLDD1.h"
@@ -120,7 +118,22 @@ int main(void)
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
-  /* For example: for(;;) { } */
+   for(;;) {
+
+		CS1_CriticalVariable();
+		CS1_EnterCritical();
+		/*Critical Section*/
+		CS1_ExitCritical();
+
+		LEDPin1_ClrVal();
+		WAIT1_Waitms(500);
+		LEDPin1_SetVal();
+		LEDPin2_ClrVal();
+		WAIT1_Waitms(500);
+		LEDPin2_SetVal();
+
+
+   }
   APP_Start();
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
