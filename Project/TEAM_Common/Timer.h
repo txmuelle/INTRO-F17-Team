@@ -10,6 +10,7 @@
 #define TIMER_H_
 
 #include "Platform.h"
+#include "LEDPin1.h"
 #if PL_CONFIG_HAS_TIMER
 
 /*! \todo Check timer tick frequency */

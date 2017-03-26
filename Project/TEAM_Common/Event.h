@@ -12,6 +12,7 @@
 #define EVENT_H_
 
 #include "Platform.h"
+#include "LEDPin1.h"
 #if PL_CONFIG_HAS_EVENTS
 
 typedef enum EVNT_Handle {
@@ -91,7 +92,6 @@ bool EVNT_EventIsSetAutoClear(EVNT_Handle event);
  * \param[in] clearEvent If TRUE, it will clear the event in the EVNT_HandleEvent(), otherwise not.
  */
 void EVNT_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent);
-
 /*! \brief Event module initialization */
 void EVNT_Init(void);
 
