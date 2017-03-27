@@ -31,10 +31,13 @@
 #include "Cpu.h"
 #include "Events.h"
 #include "FRTOS1.h"
-#include "RTOSCNTRLDD1.h"
+//#include "RTOSCNTRLDD1.h"
 #include "MCUC1.h"
 #include "LEDPin1.h"
 #include "BitIoLdd17.h"
+#include "TI1.h"
+#include "TimerIntLdd1.h"
+#include "TU1.h"
 #include "WAIT1.h"
 #include "UTIL1.h"
 #include "KIN1.h"
@@ -107,10 +110,12 @@ int main(void)
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
-
+  for(;;) {
+	  LEDPin1_NegVal();
+  }
   /* Write your code here */
   APP_Start();
-  /* For example: for(;;) { } */
+  /* For example:  */
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

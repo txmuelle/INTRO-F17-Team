@@ -23,6 +23,7 @@
 void TMR_OnInterrupt(void) {
   /* this one gets called from an interrupt!!!! */
   /*! \todo Add code for a blinking LED here */
+<<<<<<< HEAD
 	static unsigned int cntr = 0;
 #define BLINK_PERIOD_MS 1000
 
@@ -32,6 +33,19 @@ void TMR_OnInterrupt(void) {
 		EVNT_EventIsSet(EVNT_LED_HEARTBEAT);
 	}
 #endif
+=======
+
+	static unsigned int cntr=0;
+	#define BLINK_PERIOD_MS 1000
+
+	/*	cntr++;
+	#if PL_CONFIG_HAS_EVENTS
+		if((cntr%8BLINK_PERIOD_MS/TMR_TICK_MS))==0){
+
+			EVNT_SetEvent(EVNT_LE_HEARTBEAT);
+		}
+	#endif*/
+>>>>>>> origin/master
 
 }
 
