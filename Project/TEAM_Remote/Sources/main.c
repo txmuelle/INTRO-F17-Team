@@ -91,6 +91,7 @@
 #include "USB0.h"
 #include "TmDt1.h"
 #include "TMOUT1.h"
+#include "Keys.h"
 #include "HF1.h"
 #include "CS1.h"
 /* Including shared modules, which are used for whole project */
@@ -107,15 +108,22 @@ int main(void)
 {
   /* Write your local variable definition here */
 
+
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
-  for(;;) {
-	  LEDPin1_NegVal();
-  }
+
   /* Write your code here */
   APP_Start();
   /* For example:  */
+  for(;;){
+  	//  KEY_Scan();
+  	 // EVNT_HandleEvent(callback);
+  	  LEDPin1_SetVal();
+  	  WAIT1_Waitms(500);
+  	  LEDPin1_ClrVal();
+  	  WAIT1_Waitms(100);
+    }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
