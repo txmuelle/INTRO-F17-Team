@@ -48,6 +48,14 @@ void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
   case EVNT_STARTUP:
+  {
+	  int i;
+	  for(i=0; i < 5; i++){
+	        LED2_Neg();
+	        WAIT1_Waitms(500);
+	  }
+	  LED2_Off();
+  }
     break;
   default:
     break;
@@ -133,8 +141,15 @@ void APP_Start(void) {
 #if PL_CONFIG_HAS_EVENTS
   EVNT_SetEvent(EVNT_STARTUP);
 #endif
+  __asm volatile("cpsie i"); //Turn on interrupts
+
   for(;;) {
-    WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
+
+
+
+	  		EVNT_HandleEvent(APP_EventHandler, TRUE);
+
+	  		WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
   }
 #endif
 }
