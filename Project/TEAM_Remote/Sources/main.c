@@ -122,16 +122,16 @@ int main(void)
 	 WAIT1_Waitms(100);
 	 }*/
 
-	for (;;) {
-		CLS1_SendStr("hello ", CLS1_GetStdio()->stdOut);
-		CLS1_SendNum32s(cntr, CLS1_GetStdio()->stdOut);
-		CLS1_SendStr("\r\n", CLS1_GetStdio()->stdOut);
-		cntr++;
-		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
+	//for (;;) {
+		//CLS1_SendStr("hello ", CLS1_GetStdio()->stdOut);
+		//CLS1_SendNum32s(cntr, CLS1_GetStdio()->stdOut);
+		//CLS1_SendStr("\r\n", CLS1_GetStdio()->stdOut);
+		//cntr++;
+		//WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
 		//LED1_Neg();
-		KEY_Scan(); /* poll keys */
-		EVNT_HandleEvent(APP_EventHandler, TRUE);
-	}
+		//KEY_Scan(); /* poll keys */
+		//EVNT_HandleEvent(APP_EventHandler, TRUE);
+	//}
 	APP_Start();
 
 	/* For example:  */
