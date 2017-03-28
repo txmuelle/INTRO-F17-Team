@@ -15,6 +15,7 @@
 #include "Keys.h"
 #include "KeyDebounce.h"
 #include "KIN1.h"
+#include "Trigger.h"
 #if PL_CONFIG_HAS_SHELL
   #include "CLS1.h"
   #include "Shell.h"
@@ -54,8 +55,9 @@ void APP_EventHandler(EVNT_Handle event) {
   switch(event) {
   case EVNT_STARTUP:
   {
-	  CLS1_SendStr("Welcome Master. I'm starting up and be ready for you soon.\r\n",SHELL_GetStdio()->stdOut);
 	  int i;
+	  CLS1_SendStr("Welcome Master. I'm starting up and be ready for you soon.\r\n",SHELL_GetStdio()->stdOut);
+	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
 	  for(i=0; i < 3; i++){
 
 	        LED2_Neg();        //blinking the LED on Startup
@@ -65,25 +67,28 @@ void APP_EventHandler(EVNT_Handle event) {
   }
     break;
 
+  /*only turn on for debug purpose*/
   case EVNT_LED_HEARTBEAT:{
-      LED1_On();
-      WAIT1_Waitms(500);
-	  LED1_Off();
+	  TRG_AddTick();
+     // LED1_On();
+     // WAIT1_Waitms(500);
+	 // LED1_Off();
   }
   break;
   case EVNT_SW1_PRESSED: //button short pressed
   {
 	    cntr++;
+	    BUZ_PlayTune(BUZ_TUNE_BUTTON);
 	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
-		/*turn On the LED1*/
- 		LEDPin1_ClrVal();
+		/*blink LED1*/
+ 		LED1_On();
  		WAIT1_Waitms(500);
- 		LEDPin1_SetVal();
+ 		LED1_Off();
   }
   break;
   case EVNT_SW1_LPRESSED: //button long pressed
   {
-	  /*! \todo */
+	  BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
 	  CLS1_printf("You pushed the button long \r\n", SHELL_GetStdio()->stdOut);
   }
   break;
@@ -175,6 +180,7 @@ void APP_Start(void) {
 /*intit commands*/
   __asm volatile("cpsie i"); //Turn on interrupts
   //EVNT_Init();
+  BUZ_Init();
 
 /*main for loop*/
   for(;;) {
