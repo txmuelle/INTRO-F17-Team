@@ -43,8 +43,10 @@
   #include "LCD.h"
 #endif
 
-  /*Global Variables*/
+  /*temporary Global Variables for debug*/
   int cntr = 0;
+
+  /******/
 
 #if PL_CONFIG_HAS_EVENTS
 void APP_EventHandler(EVNT_Handle event) {
@@ -52,14 +54,39 @@ void APP_EventHandler(EVNT_Handle event) {
   switch(event) {
   case EVNT_STARTUP:
   {
+	  CLS1_SendStr("Welcome Master. I'm starting up and be ready for you soon.\r\n",SHELL_GetStdio()->stdOut);
 	  int i;
 	  for(i=0; i < 3; i++){
-	        LED2_Neg();
+
+	        LED2_Neg();        //blinking the LED on Startup
 	        WAIT1_Waitms(500);
-	  }
+	  }/*for*/
 	  LED2_Off();
   }
     break;
+
+  case EVNT_LED_HEARTBEAT:{
+      LED1_On();
+      WAIT1_Waitms(500);
+	  LED1_Off();
+  }
+  break;
+  case EVNT_SW1_PRESSED: //button short pressed
+  {
+	    cntr++;
+	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
+		/*turn On the LED1*/
+ 		LEDPin1_ClrVal();
+ 		WAIT1_Waitms(500);
+ 		LEDPin1_SetVal();
+  }
+  break;
+  case EVNT_SW1_LPRESSED: //button long pressed
+  {
+	  /*! \todo */
+	  CLS1_printf("You pushed the button long \r\n", SHELL_GetStdio()->stdOut);
+  }
+  break;
   default:
     break;
    } /* switch */
@@ -145,30 +172,21 @@ void APP_Start(void) {
   EVNT_SetEvent(EVNT_STARTUP);
 #endif
 
-
+/*intit commands*/
   __asm volatile("cpsie i"); //Turn on interrupts
+  //EVNT_Init();
 
+/*main for loop*/
   for(;;) {
 
-
-
+	  /*Eventhandler*/
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  KEY_Scan();
 
-	  WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
+	  /*write your Code here*/
+	  WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
 
-	   CLS1_SendStr("Hello World, it's a beautiful day, isn't it?\r\n",SHELL_GetStdio()->stdOut);
 
-
-	   if(KEY1_Get()){
-
-		    cntr++;
-		      CLS1_printf("You pushed the button %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
- 			/*turn On the LED*/
- 	  		LEDPin1_ClrVal();
- 	  		WAIT1_Waitms(500);
- 	  		LEDPin1_SetVal();
-	   }
-	   //WAIT1_Waitms(500); //Just wait some time
 
   }
 
