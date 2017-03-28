@@ -43,6 +43,9 @@
   #include "LCD.h"
 #endif
 
+  /*Global Variables*/
+  int cntr = 0;
+
 #if PL_CONFIG_HAS_EVENTS
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
@@ -142,15 +145,31 @@ void APP_Start(void) {
   EVNT_SetEvent(EVNT_STARTUP);
 #endif
 
+
   __asm volatile("cpsie i"); //Turn on interrupts
 
   for(;;) {
 
 
 
-	  		//EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
 
-	  		//WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
+	  WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
+
+	   CLS1_SendStr("Hello World, it's a beautiful day, isn't it?\r\n",SHELL_GetStdio()->stdOut);
+
+
+	   if(KEY1_Get()){
+
+		    cntr++;
+		      CLS1_printf("You pushed the button %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
+ 			/*turn On the LED*/
+ 	  		LEDPin1_ClrVal();
+ 	  		WAIT1_Waitms(500);
+ 	  		LEDPin1_SetVal();
+	   }
+	   //WAIT1_Waitms(500); //Just wait some time
+
   }
 
 #endif
