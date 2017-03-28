@@ -41,9 +41,6 @@
 #include "CLS1.h"
 #include "FRTOS1.h"
 #include "RTOSCNTRLDD1.h"
-#include "TI1.h"
-#include "TimerIntLdd1.h"
-#include "TU1.h"
 #include "RTT1.h"
 #include "SYS1.h"
 #include "LED_IR.h"
@@ -104,6 +101,7 @@
 #include "XF1.h"
 #include "UTIL1.h"
 #include "KIN1.h"
+#include "Keys.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -111,7 +109,7 @@
 #include "IO_Map.h"
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "Application.h"
-
+#include "Shell.h"
 
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -119,25 +117,38 @@ int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
   /* Write your local variable definition here */
-
+	 int cntr = 0;
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
-//   for(;;) {
+  PL_Init();
+  __asm volatile("cpsie i"); //Turn on interrupts
+   for(;;) {
 
-  //			/*turn On the LED*/
-  //	  		LEDPin1_ClrVal();
-  //	  		WAIT1_Waitms(500);
-  //	  		LEDPin1_SetVal();
+
+	   CLS1_SendStr("Hello World, it's a beautiful day, isn't it?\r\n",SHELL_GetStdio()->stdOut);
+
+
+	   if(KEY1_Get()){
+
+		    cntr++;
+		      CLS1_printf("You pushed the button %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
+  			/*turn On the LED*/
+  	  		LEDPin1_ClrVal();
+  	  		WAIT1_Waitms(500);
+  	  		LEDPin1_SetVal();
+	   }
+	   WAIT1_Waitms(500); //Just wait some time
+
   //	  		LEDPin2_ClrVal();
   //	  		WAIT1_Waitms(500);
   //	  		LEDPin2_SetVal();
 
 
 
-//   }
+   }
   APP_Start();
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
