@@ -1,0 +1,48 @@
+-----------------------------------------------------------------------------------------------------------------------------
+16.3 Questions
+ Describe the impact of 'blocking send' property in the Shell component.
+When would you enable 'blocking send', when not?
+-Wenn RTOS verwendet wird, bzw. wenn mehre Task, oder Funktionen senden wollen
+ sollte 'blocking send' eingeschatet sein . So das jeweils nur einer zeitgleich schreiben kann.
+
+ What is the advantage of using a 'stdio' struct as used by the Shell
+component?
+-Braucht es um sowohl RTT wie auch UART gleichzeitig zuverwenden???
+
+ What is the diference between the Utility strcpy() function and the
+normal strcpy() of your ANSI/compiler library? What are the ad-
+vantages and disadvantages?
+
+** ===================================================================
+**     Method      :  UTIL1_strcpy (component Utility)
+**     Description :
+**         Same as normal strcpy, but safe as it does not write beyond
+**         the buffer.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * dst             - Pointer to destination string
+**         dstSize         - Size of the destination buffer (in
+**                           bytes).
+**       * src             - Pointer to source string.
+**     Returns     : Nothing
+** ===================================================================
+
+  \brief copy the string src into dst. It performs the same task as strncpy, except
+     - always terminates the result string.
+     - does not zero out the remaining part in dst.
+     Note: dstSize is the size of dst INCLUDING zero byte.
+     Precondition: src, dst != NULL
+  \param[in,out] dst Start of string buffer, where to append the number string
+  \param[in] dstSize The size of the buffer, including the zero byte
+  \param[in] src The source string to copy
+*/
+
+ The CLS1 SendNum() function is using
+unsigned char buf[sizeof("-1234567890")];
+Can you explain why it is using the sizeof() directive?
+- Um die Speicherplatzgrösse immer gleich gross zu haben, nehme ich an???
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------

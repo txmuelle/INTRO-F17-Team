@@ -15,6 +15,7 @@
 #include "Keys.h"
 #include "KeyDebounce.h"
 #include "KIN1.h"
+#include "Trigger.h"
 #if PL_CONFIG_HAS_SHELL
   #include "CLS1.h"
   #include "Shell.h"
@@ -43,6 +44,11 @@
   #include "LCD.h"
 #endif
 
+  /*temporary Global Variables for debug*/
+  int cntr = 0;
+
+  /******/
+
 #if PL_CONFIG_HAS_EVENTS
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
@@ -50,13 +56,42 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_STARTUP:
   {
 	  int i;
+	  CLS1_SendStr("Welcome Master. I'm starting up and be ready for you soon.\r\n",SHELL_GetStdio()->stdOut);
+	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
 	  for(i=0; i < 3; i++){
-	        LED2_Neg();
+
+	        LED2_Neg();        //blinking the LED on Startup
 	        WAIT1_Waitms(500);
-	  }
+	  }/*for*/
 	  LED2_Off();
   }
     break;
+
+  /*only turn on for debug purpose*/
+  case EVNT_LED_HEARTBEAT:{
+	  TRG_AddTick();
+     // LED1_On();
+     // WAIT1_Waitms(500);
+	 // LED1_Off();
+  }
+  break;
+  case EVNT_SW1_PRESSED: //button short pressed
+  {
+	    cntr++;
+	    BUZ_PlayTune(BUZ_TUNE_BUTTON);
+	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
+		/*blink LED1*/
+ 		LED1_On();
+ 		WAIT1_Waitms(500);
+ 		LED1_Off();
+  }
+  break;
+  case EVNT_SW1_LPRESSED: //button long pressed
+  {
+	  BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
+	  CLS1_printf("You pushed the button long \r\n", SHELL_GetStdio()->stdOut);
+  }
+  break;
   default:
     break;
    } /* switch */
@@ -142,15 +177,23 @@ void APP_Start(void) {
   EVNT_SetEvent(EVNT_STARTUP);
 #endif
 
+/*intit commands*/
   __asm volatile("cpsie i"); //Turn on interrupts
+  //EVNT_Init();
+  BUZ_Init();
 
+/*main for loop*/
   for(;;) {
 
+	  /*Eventhandler*/
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  KEY_Scan();
+
+	  /*write your Code here*/
+	  WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
 
 
-	  		//EVNT_HandleEvent(APP_EventHandler, TRUE);
 
-	  		//WAIT1_Waitms(25); /* just wait for some arbitrary time .... */
   }
 
 #endif
