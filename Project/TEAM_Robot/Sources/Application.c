@@ -69,7 +69,10 @@ void APP_EventHandler(EVNT_Handle event) {
 
   /*only turn on for debug purpose*/
   case EVNT_LED_HEARTBEAT:{
+	  int i =0;
 	  TRG_AddTick();
+	  CLS1_printf("Status: is running and all good so far... %d \r\n",i, SHELL_GetStdio()->stdOut);
+	  i++;
      // LED1_On();
      // WAIT1_Waitms(500);
 	 // LED1_Off();
@@ -178,7 +181,7 @@ void APP_Start(void) {
 #endif
 
 /*intit commands*/
-  __asm volatile("cpsie i"); //Turn on interrupts
+  __asm volatile("cpsie i"); //Turn on interrupts, remove when using FreeRTOS
   //EVNT_Init();
   BUZ_Init();
 
