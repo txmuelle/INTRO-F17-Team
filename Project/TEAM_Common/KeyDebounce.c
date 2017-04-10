@@ -71,6 +71,7 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
 #if PL_CONFIG_NOF_KEYS >= 1
       if (keys&(1<<0)) {
         EVNT_SetEvent(EVNT_SW1_PRESSED);
+        //KEY_DisableInterrupts();
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 2
@@ -110,6 +111,7 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
 #if PL_CONFIG_NOF_KEYS >= 1
       if (keys&(1<<0)) {
         EVNT_SetEvent(EVNT_SW1_LPRESSED);
+        //KEY_DisableInterrupts();
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 2
@@ -149,6 +151,7 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
 #if PL_CONFIG_NOF_KEYS >= 1
       if (keys&(1<<0)) {
         EVNT_SetEvent(EVNT_SW1_RELEASED);
+        //KEY_inableInterrupts();
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 2
@@ -184,6 +187,8 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
       break;
     case DBNC_EVENT_END:
       /*! \todo Implement what you have to do at the end of the debouncing. Check if you have to re-enable interrupts! */
+//clear events?
+
     #if PL_CONFIG_HAS_KBI
       KEY_EnableInterrupts();
     #endif
@@ -213,7 +218,7 @@ void KEYDBNC_Process(void) {
    * And you will need to disable the keyboard interrupts too!
    */
   /*! \todo Only debounce if you are not debouncing already */
-  if (1) { /* a key is pressed and we are not debouncing */
+  if ((KEYDBNC_GetKeys()!=0) && (KEYDBNC_FSMdata.state == DBNC_EVENT_END)) { /* a key is pressed and we are not debouncing */
   #if PL_CONFIG_HAS_KBI
     KEY_DisableInterrupts(); /* disable interrupts for all keys */
   #endif

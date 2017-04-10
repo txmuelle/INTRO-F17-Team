@@ -58,8 +58,11 @@ void DBNC_Process(DBNC_FSMData *data) {
           return;
         } else if (keys==0) { /* all keys are released */
 #if 1 /* \todo call event here if you want to be notified when button is released */
+          data->onDebounceEvent(DBNC_EVENT_RELEASED, data->scanValue);
+
           if (data->longKeyCnt!=0) { /* zero means we already issued the long button press message */
             data->onDebounceEvent(DBNC_EVENT_PRESSED, data->scanValue); /* we have a key press: call event handler  */
+
           }
 #endif
           data->state = DBNC_KEY_RELEASE; /* advance to next state */
