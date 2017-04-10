@@ -35,7 +35,9 @@ static unsigned int cntr = 0;
 	  }
 
 #endif
-
+#if PL_CONFIG_HAS_TRIGGER
+  TRG_AddTick();
+#endif
 
 }
 
