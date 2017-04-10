@@ -35,6 +35,69 @@ static const BUZ_Tune MelodyWelcome[] =
     {300,100},
 };
 
+static const BUZ_Tune MelodyMario[] =
+{ /* freq, ms */
+		/*intro*/
+	    {660,100},
+		{0,150},
+	    {660,100},
+		{0,300},
+        {660,100},
+		{0,300},
+        {510,100},
+		{0,100},
+	    {660,100},
+		{0,300},
+	    {770,100},
+		{0,550},
+	    {380,100},
+
+		/*Melody*/
+	    {510,100},
+		{0,450},
+	    {380,100},
+		{0,400},
+        {320,100},
+		{0,500},
+        {440,100},
+		{0,500},
+	    {440,100},
+		{0,300},
+	    {480,80},
+		{0,330},
+	    {450,100},
+		{0,150},
+	    {430,100},
+		{0,300},
+        {380,100},
+		{0,200},
+        {660,80},
+		{0,200},
+	    {760,50},
+		{0,150},
+	    {860,100},
+		{0,300},
+	    {700,80},
+
+		{0,150},
+	    {760,50},
+		{0,350},
+        {660,80},
+		{0,300},
+        {520,80},
+		{0,150},
+	    {580,80},
+		{0,150},
+	    {480,80},
+		{0,500},
+
+	    {500,100},
+		{0,300},
+
+
+
+};
+
 static const BUZ_Tune MelodyButton[] =
 { /* freq, ms */
     {200,100},
@@ -61,6 +124,7 @@ typedef struct {
 
 static MelodyDesc BUZ_Melodies[] = {
   {0, sizeof(MelodyWelcome)/sizeof(MelodyWelcome[0]),         {0, 0}, MelodyWelcome}, /* BUZ_TUNE_WELCOME */
+  {0, sizeof(MelodyMario)/sizeof(MelodyMario[0]),             {0, 0}, MelodyMario},   /*BUZ_TUNE_MARIO*/
   {0, sizeof(MelodyButton)/sizeof(MelodyButton[0]),           {0, 0}, MelodyButton}, /* BUZ_TUNE_BUTTON */
   {0, sizeof(MelodyButtonLong)/sizeof(MelodyButtonLong[0]),   {0, 0}, MelodyButtonLong}, /* BUZ_TUNE_BUTTON_LONG */
 };
