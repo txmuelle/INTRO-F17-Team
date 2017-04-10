@@ -69,9 +69,9 @@ void APP_EventHandler(EVNT_Handle event) {
 
   /*only turn on for debug purpose*/
   case EVNT_LED_HEARTBEAT:{
+
 	  int i =0;
-	  TRG_AddTick();
-	  CLS1_printf("Status: is running and all good so far... %d \r\n",i, SHELL_GetStdio()->stdOut);
+	  CLS1_printf("Status: is running... %d \r\n",i, SHELL_GetStdio()->stdOut);
 	  i++;
      // LED1_On();
      // WAIT1_Waitms(500);
@@ -81,7 +81,7 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW1_PRESSED: //button short pressed
   {
 	    cntr++;
-	    BUZ_PlayTune(BUZ_TUNE_BUTTON);
+	    BUZ_PlayTune(BUZ_TUNE_MARIO);
 	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
 		/*blink LED1*/
  		LED1_On();
