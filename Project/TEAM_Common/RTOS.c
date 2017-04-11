@@ -17,18 +17,19 @@
 static void RTOS_BlinkyTask(void *pvParameters) {
 	for (;;) {
 		LEDPin1_NegVal();
+		 WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
 	}
 }
 
 static void RTOS_mainTask(void *pvParameters) {
 	for (;;) {
-		/*Eventhandler*/
+		/*Event handler*/
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
 		/*Key scanning*/
 		KEY_Scan();
 
 		/*write your Code here*/
-		vTaskDelay(pdMS_TO_TICKS(100)); /* just wait for some arbitrary time .... */
+		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
 	}
 }
 
@@ -38,17 +39,17 @@ void RTOS_Init(void) {
 	BaseType_t res;
 	xTaskHandle taskHndl;
 
-	if (xTaskCreate(RTOS_mainTask, (signed portCHAR *) "mainTask", 100,
+	if (xTaskCreate(RTOS_mainTask, (signed portCHAR *) "mainTask", configMINIMAL_STACK_SIZE + 50,
 			(void*) NULL,
 			tskIDLE_PRIORITY, NULL) != pdPASS) {
-		printf("ERROR!");
+		CLS1_printf("ERROR!");
 		/* error case only, stay here! */
 	}
 
 	res = xTaskCreate(RTOS_BlinkyTask, "Blinky", configMINIMAL_STACK_SIZE + 50,
 			(void *) NULL, tskIDLE_PRIORITY, &taskHndl);
 	if (res != pdPASS) {
-		printf("ERROR!");
+		CLS1_printf("ERROR!");
 	}
 
 }

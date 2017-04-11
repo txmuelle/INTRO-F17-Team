@@ -10,7 +10,16 @@
 #define RTOS_H_
 
 #include "Platform.h"
+
+
 #if PL_CONFIG_HAS_RTOS
+
+/*! \brief Main Task */
+static void RTOS_mainTask(void *pvParameters);
+
+/*! \brief just blinking LEDs */
+static void RTOS_BlinkyTask(void *pvParameters);
+
 /*! \brief Initializes the RTOS module */
 void RTOS_Init(void);
 
