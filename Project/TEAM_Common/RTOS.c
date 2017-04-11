@@ -26,7 +26,8 @@ static void RTOS_mainTask(void *pvParameters) {
 		/*Event handler*/
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
 		/*Key scanning*/
-		KEY_Scan();
+		//KEY_Scan();
+		KEYDBNC_Process();
 
 		/*write your Code here*/
 		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
@@ -61,7 +62,7 @@ void RTOS_Deinit(void) {
 void RTOS_Run(void) {
 	/*Use a function named RTOS Run() which will set up your tasks, and
 	 then starts the scheduler.*/
-	RTOS_Init();
+	//RTOS_Init(); don't need here
 
 }
 
