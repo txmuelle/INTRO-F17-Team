@@ -8,19 +8,44 @@
 #if PL_CONFIG_HAS_RTOS
 #include "RTOS.h"
 #include "FRTOS1.h"
+#include "Application.h"
+#include "Event.h"
 #include "LED.h"
+#include "Keys.h"
+#include "KeyDebounce.h"
 
-static void BlinkyTask(void *pvParameters) {
+static void RTOS_BlinkyTask(void *pvParameters) {
 	for (;;) {
 		LEDPin1_NegVal();
 	}
 }
 
+static void RTOS_mainTask(void *pvParameters) {
+	for (;;) {
+		/*Eventhandler*/
+		EVNT_HandleEvent(APP_EventHandler, TRUE);
+		/*Key scanning*/
+		KEY_Scan();
+
+		/*write your Code here*/
+		vTaskDelay(pdMS_TO_TICKS(100)); /* just wait for some arbitrary time .... */
+	}
+}
+
 void RTOS_Init(void) {
+	EVNT_SetEvent(EVNT_STARTUP); /* set startup event */
 	/*! \todo Create tasks here */
 	BaseType_t res;
 	xTaskHandle taskHndl;
-	res = xTaskCreate(BlinkyTask, "Blinky", configMINIMAL_STACK_SIZE + 50,
+
+	if (xTaskCreate(RTOS_mainTask, (signed portCHAR *) "mainTask", 100,
+			(void*) NULL,
+			tskIDLE_PRIORITY, NULL) != pdPASS) {
+		printf("ERROR!");
+		/* error case only, stay here! */
+	}
+
+	res = xTaskCreate(RTOS_BlinkyTask, "Blinky", configMINIMAL_STACK_SIZE + 50,
 			(void *) NULL, tskIDLE_PRIORITY, &taskHndl);
 	if (res != pdPASS) {
 		printf("ERROR!");
