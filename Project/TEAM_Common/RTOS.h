@@ -11,7 +11,6 @@
 
 #include "Platform.h"
 
-
 #if PL_CONFIG_HAS_RTOS
 
 /*! \brief Main Task */
@@ -28,7 +27,8 @@ void RTOS_Deinit(void);
 
 void RTOS_Run(void);
 
-
+static void AppTask(void* param);
+void KillMe(void* param);
 #endif /* PL_CONFIG_HAS_RTOS */
 
 #endif /* RTOS_H_ */

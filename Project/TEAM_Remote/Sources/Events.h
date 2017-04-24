@@ -34,6 +34,7 @@
 #include "PE_Const.h"
 #include "IO_Map.h"
 #include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 #include "MCUC1.h"
 #include "LEDPin1.h"
 #include "BitIoLdd17.h"

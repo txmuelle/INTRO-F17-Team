@@ -31,6 +31,7 @@
 #include "Events.h"
 #include "Application.h"
 #include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 //#include "RTOSCNTRLDD1.h"
 #include "MCUC1.h"
 #include "LEDPin1.h"
@@ -115,7 +116,7 @@ int main(void)
 	/*** End of Processor Expert internal initialization.                    ***/
 
 	/* Write your code here */
-	PL_Init(); //treiber initialisieren
+	//PL_Init(); //treiber initialisieren
 
 
 	APP_Start();

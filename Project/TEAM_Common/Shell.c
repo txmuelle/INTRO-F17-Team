@@ -12,281 +12,274 @@
 #include "CLS1.h"
 #include "Application.h"
 #if PL_CONFIG_HAS_RTOS
-  #include "FRTOS1.h"
+#include "FRTOS1.h"
 #endif
 #if PL_CONFIG_HAS_BLUETOOTH
-  #include "BT1.h"
+#include "BT1.h"
 #endif
 #if PL_CONFIG_HAS_BUZZER
-  #include "Buzzer.h"
+#include "Buzzer.h"
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE
-  #include "ShellQueue.h"
+#include "ShellQueue.h"
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  #include "Reflectance.h"
+#include "Reflectance.h"
 #endif
 #if PL_CONFIG_HAS_SEGGER_RTT
-  #include "RTT1.h"
+#include "RTT1.h"
 #endif
 #if PL_CONFIG_HAS_MOTOR
-  #include "Motor.h"
+#include "Motor.h"
 #endif
 #if PL_CONFIG_HAS_MCP4728
-  #include "MCP4728.h"
+#include "MCP4728.h"
 #endif
 #if PL_CONFIG_HAS_QUADRATURE
-  #include "Q4CLeft.h"
-  #include "Q4CRight.h"
+#include "Q4CLeft.h"
+#include "Q4CRight.h"
 #endif
 #if PL_CONFIG_HAS_QUAD_CALIBRATION
-  #include "QuadCalib.h"
+#include "QuadCalib.h"
 #endif
 #if PL_CONFIG_HAS_MOTOR_TACHO
-  #include "Tacho.h"
+#include "Tacho.h"
 #endif
 #if PL_CONFIG_HAS_ULTRASONIC
-  #include "Ultrasonic.h"
+#include "Ultrasonic.h"
 #endif
 #if PL_CONFIG_HAS_PID
-  #include "PID.h"
+#include "PID.h"
 #endif
 #if PL_CONFIG_HAS_DRIVE
-  #include "Drive.h"
+#include "Drive.h"
 #endif
 #if PL_CONFIG_HAS_TURN
-  #include "Turn.h"
+#include "Turn.h"
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
-  #include "LineFollow.h"
+#include "LineFollow.h"
 #endif
 #if PL_CONFIG_HAS_RADIO
-  #include "RApp.h"
-  #include "RNet_App.h"
-  #include "RNetConf.h"
+#include "RApp.h"
+#include "RNet_App.h"
+#include "RNetConf.h"
 #endif
 #if RNET_CONFIG_REMOTE_STDIO
-  #include "RStdIO.h"
+#include "RStdIO.h"
 #endif
 #if PL_CONFIG_HAS_REMOTE
-  #include "Remote.h"
+#include "Remote.h"
 #endif
 #if PL_CONFIG_HAS_LINE_MAZE
-  #include "Maze.h"
+#include "Maze.h"
 #endif
 #if PL_CONFIG_HAS_USB_CDC
-  #include "CDC1.h"
+#include "CDC1.h"
 #endif
 #if PL_CONFIG_HAS_BATTERY_ADC
-  #include "Battery.h"
+#include "Battery.h"
 #endif
 #include "KIN1.h"
 #include "TmDt1.h"
 
 #if CLS1_DEFAULT_SERIAL
-  #error "Default is RTT. Disable any Shell default connection in the component propeties, as we are setting it a runtime!"
+#error "Default is RTT. Disable any Shell default connection in the component propeties, as we are setting it a runtime!"
 #endif
 #define SHELL_CONFIG_HAS_EXTRA_UART  (1) /* use AsynchroSerial */
-#define SHELL_CONFIG_HAS_SHELL_RTT   (1) /* use SEGGER RTT */
+#define SHELL_CONFIG_HAS_SHELL_RTT   (1 && PL_CONFIG_HAS_SEGGER_RTT) /* use SEGGER RTT */
 #define SHELL_CONFIG_HAS_SHELL_CDC   (1 && PL_CONFIG_HAS_USB_CDC) /* use USB CDC */
 
 #if SHELL_CONFIG_HAS_EXTRA_UART
- /* ******************************************************************
-  * UART Standard I/O
-  * ******************************************************************/
+/* ******************************************************************
+ * UART Standard I/O
+ * ******************************************************************/
 #include "AS1.h"
 
-  static bool UART_KeyPressed(void) {
-    return AS1_GetCharsInRxBuf()!=0;
-  }
+static bool UART_KeyPressed(void) {
+	return AS1_GetCharsInRxBuf() != 0;
+}
 
-  static void UART_SendChar(uint8_t ch) {
-    CLS1_SendCharFct(ch, AS1_SendChar);
-  }
+static void UART_SendChar(uint8_t ch) {
+	CLS1_SendCharFct(ch, AS1_SendChar);
+}
 
-  static void UART_ReceiveChar(uint8_t *p) {
-    if (AS1_RecvChar(p)!=ERR_OK) {
-      *p = '\0';
-    }
-  }
+static void UART_ReceiveChar(uint8_t *p) {
+	if (AS1_RecvChar(p) != ERR_OK) {
+		*p = '\0';
+	}
+}
 
-  static CLS1_ConstStdIOType UART_stdio = {
-    .stdIn = UART_ReceiveChar,
-    .stdOut = UART_SendChar,
-    .stdErr = UART_SendChar,
-    .keyPressed = UART_KeyPressed,
-  };
+static CLS1_ConstStdIOType UART_stdio = { .stdIn = UART_ReceiveChar, .stdOut =
+		UART_SendChar, .stdErr = UART_SendChar, .keyPressed = UART_KeyPressed, };
 
-  static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
+static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 #endif
 /********************************************************************/
 
 typedef struct {
-  CLS1_ConstStdIOType *stdio;
-  unsigned char *buf;
-  size_t bufSize;
+	CLS1_ConstStdIOType *stdio;
+	unsigned char *buf;
+	size_t bufSize;
 } SHELL_IODesc;
 
 static void SHELL_SendChar(uint8_t ch) {
 #if SHELL_CONFIG_HAS_SHELL_RTT
-  RTT1_SendChar(ch);
+	RTT1_SendChar(ch);
 #endif
 #if SHELL_CONFIG_HAS_EXTRA_UART
-  UART_SendChar(ch);
+	UART_SendChar(ch);
 #endif
 #if SHELL_CONFIG_HAS_SHELL_CDC
-  CDC1_SendChar(ch);
+	CDC1_SendChar(ch);
 #endif
 }
 
 static void SHELL_ReadChar(uint8_t *p) {
-  *p = '\0'; /* default, nothing available */
+	*p = '\0'; /* default, nothing available */
 #if SHELL_CONFIG_HAS_SHELL_RTT
-  if (RTT1_stdio.keyPressed()) {
-    RTT1_stdio.stdIn(p);
-    return;
-  }
+	if (RTT1_stdio.keyPressed()) {
+		RTT1_stdio.stdIn(p);
+		return;
+	}
 #endif
 #if SHELL_CONFIG_HAS_EXTRA_UART
-  if (UART_stdio.keyPressed()) {
-    UART_stdio.stdIn(p);
-    return;
-  }
+	if (UART_stdio.keyPressed()) {
+		UART_stdio.stdIn(p);
+		return;
+	}
 #endif
 #if SHELL_CONFIG_HAS_SHELL_CDC
-  if (CDC1_stdio.keyPressed()) {
-    CDC1_stdio.stdIn(p);
-    return;
-  }
+	if (CDC1_stdio.keyPressed()) {
+		CDC1_stdio.stdIn(p);
+		return;
+	}
 #endif
 }
 
 static bool SHELL_KeyPressed(void) {
 #if SHELL_CONFIG_HAS_SHELL_RTT
-  if (RTT1_stdio.keyPressed()) {
-    return TRUE;
-  }
+	if (RTT1_stdio.keyPressed()) {
+		return TRUE;
+	}
 #endif
 #if SHELL_CONFIG_HAS_EXTRA_UART
-  if (UART_stdio.keyPressed()) {
-    return TRUE;
-  }
+	if (UART_stdio.keyPressed()) {
+		return TRUE;
+	}
 #endif
 #if SHELL_CONFIG_HAS_SHELL_CDC
-  if (CDC1_stdio.keyPressed()) {
-    return TRUE;
-  }
+	if (CDC1_stdio.keyPressed()) {
+		return TRUE;
+	}
 #endif
-  return FALSE;
+	return FALSE;
 }
 
-CLS1_ConstStdIOType SHELL_stdio =
-{
-  (CLS1_StdIO_In_FctType)SHELL_ReadChar, /* stdin */
-  (CLS1_StdIO_OutErr_FctType)SHELL_SendChar, /* stdout */
-  (CLS1_StdIO_OutErr_FctType)SHELL_SendChar, /* stderr */
-  SHELL_KeyPressed /* if input is not empty */
+CLS1_ConstStdIOType SHELL_stdio = { (CLS1_StdIO_In_FctType) SHELL_ReadChar, /* stdin */
+(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stdout */
+(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stderr */
+SHELL_KeyPressed /* if input is not empty */
 };
 
 static uint8_t SHELL_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 
 CLS1_ConstStdIOType *SHELL_GetStdio(void) {
-  return &SHELL_stdio;
+	return &SHELL_stdio;
 }
 
 static const SHELL_IODesc ios[] =
-{
-    {&SHELL_stdio, SHELL_DefaultShellBuffer, sizeof(SHELL_DefaultShellBuffer)},
+		{ { &SHELL_stdio, SHELL_DefaultShellBuffer,
+				sizeof(SHELL_DefaultShellBuffer) },
 #if SHELL_CONFIG_HAS_SHELL_RTT
-    {&RTT1_stdio, RTT1_DefaultShellBuffer, sizeof(RTT1_DefaultShellBuffer)},
+				{ &RTT1_stdio, RTT1_DefaultShellBuffer,
+						sizeof(RTT1_DefaultShellBuffer) },
 #endif
-    /*! \todo Extend as needed */
-};
+		/*! \todo Extend as needed */
+		};
 
 /* forward declaration */
-static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io);
+static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled,
+		const CLS1_StdIOType *io);
 
-static const CLS1_ParseCommandCallback CmdParserTable[] =
-{
-  CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
-  SHELL_ParseCommand, /* our own module parser */
+static const CLS1_ParseCommandCallback CmdParserTable[] = { CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
+SHELL_ParseCommand, /* our own module parser */
 #if FRTOS1_PARSE_COMMAND_ENABLED
-  FRTOS1_ParseCommand, /* FreeRTOS shell parser */
+		FRTOS1_ParseCommand, /* FreeRTOS shell parser */
 #endif
 #if defined(BT1_PARSE_COMMAND_ENABLED) && BT1_PARSE_COMMAND_ENABLED
-  BT1_ParseCommand,
+		BT1_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_BUZZER
-  BUZ_ParseCommand,
+		BUZ_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  #if REF_PARSE_COMMAND_ENABLED
-  REF_ParseCommand,
-  #endif
+#if REF_PARSE_COMMAND_ENABLED
+		REF_ParseCommand,
+#endif
 #endif
 #if PL_CONFIG_HAS_MOTOR
-  MOT_ParseCommand,
+		MOT_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_MCP4728
-   MCP4728_ParseCommand,
+		MCP4728_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_QUADRATURE
-  Q4CLeft_ParseCommand,
-  Q4CRight_ParseCommand,
+		Q4CLeft_ParseCommand,
+		Q4CRight_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_QUAD_CALIBRATION
-   QUADCALIB_ParseCommand,
+		QUADCALIB_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_MOTOR_TACHO
-  TACHO_ParseCommand,
+		TACHO_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_ULTRASONIC
-  US_ParseCommand,
+		US_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_PID
-  PID_ParseCommand,
+		PID_ParseCommand,
 #endif
 #if KIN1_PARSE_COMMAND_ENABLED
-  KIN1_ParseCommand,
+		KIN1_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_BATTERY_ADC
-  BATT_ParseCommand,
+		BATT_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_DRIVE
-  DRV_ParseCommand,
+		DRV_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_TURN
-  TURN_ParseCommand,
+		TURN_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
-  LF_ParseCommand,
+		LF_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_RADIO
 #if RNET1_PARSE_COMMAND_ENABLED
-  RNET1_ParseCommand,
+		RNET1_ParseCommand,
 #endif
-  RNETA_ParseCommand,
+		RNETA_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_REMOTE
-  REMOTE_ParseCommand,
+		REMOTE_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_LINE_MAZE
-  MAZE_ParseCommand,
+		MAZE_ParseCommand,
 #endif
 #if TmDt1_PARSE_COMMAND_ENABLED
-  TmDt1_ParseCommand,
+		TmDt1_ParseCommand,
 #endif
-  NULL /* Sentinel */
+		NULL /* Sentinel */
 };
 
 static uint32_t SHELL_val; /* used as demo value for shell */
 
 void SHELL_SendString(unsigned char *msg) {
 #if PL_CONFIG_HAS_SHELL_QUEUE
-  SQUEUE_SendString(msg);
-#elif CLS1_DEFAULT_SERIAL
-  CLS1_SendStr(msg, CLS1_GetStdio()->stdOut);
-#else
+	SQUEUE_SendString(msg);
+#else CLS1_DEFAULT_SERIAL
+	CLS1_SendStr(msg, CLS1_GetStdio()->stdOut);
 #endif
 }
 
@@ -296,10 +289,11 @@ void SHELL_SendString(unsigned char *msg) {
  * \return ERR_OK or failure code
  */
 static uint8_t SHELL_PrintHelp(const CLS1_StdIOType *io) {
-  CLS1_SendHelpStr("Shell", "Shell commands\r\n", io->stdOut);
-  CLS1_SendHelpStr("  help|status", "Print help or status information\r\n", io->stdOut);
-  CLS1_SendHelpStr("  val <num>", "Assign number value\r\n", io->stdOut);
-  return ERR_OK;
+	CLS1_SendHelpStr("Shell", "Shell commands\r\n", io->stdOut);
+	CLS1_SendHelpStr("  help|status", "Print help or status information\r\n",
+			io->stdOut);
+	CLS1_SendHelpStr("  val <num>", "Assign number value\r\n", io->stdOut);
+	return ERR_OK;
 }
 
 /*!
@@ -308,75 +302,100 @@ static uint8_t SHELL_PrintHelp(const CLS1_StdIOType *io) {
  * \return ERR_OK or failure code
  */
 static uint8_t SHELL_PrintStatus(const CLS1_StdIOType *io) {
-  uint8_t buf[16];
+	uint8_t buf[16];
 
-  CLS1_SendStatusStr("Shell", "\r\n", io->stdOut);
-  UTIL1_Num32sToStr(buf, sizeof(buf), SHELL_val);
-  UTIL1_strcat(buf, sizeof(buf), "\r\n");
-  CLS1_SendStatusStr("  val", buf, io->stdOut);
-  return ERR_OK;
+	CLS1_SendStatusStr("Shell", "\r\n", io->stdOut);
+	UTIL1_Num32sToStr(buf, sizeof(buf), SHELL_val);
+	UTIL1_strcat(buf, sizeof(buf), "\r\n");
+	CLS1_SendStatusStr("  val", buf, io->stdOut);
+	return ERR_OK;
 }
 
-static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
-  uint32_t val;
-  const unsigned char *p;
+static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled,
+		const CLS1_StdIOType *io) {
+	uint32_t val;
+	const unsigned char *p;
 
-  if (UTIL1_strcmp((char*)cmd, CLS1_CMD_HELP)==0 || UTIL1_strcmp((char*)cmd, "Shell help")==0) {
-    *handled = TRUE;
-    return SHELL_PrintHelp(io);
-  } else if (UTIL1_strcmp((char*)cmd, CLS1_CMD_STATUS)==0 || UTIL1_strcmp((char*)cmd, "Shell status")==0) {
-    *handled = TRUE;
-    return SHELL_PrintStatus(io);
-  } else if (UTIL1_strncmp(cmd, "Shell val ", sizeof("Shell val ")-1)==0) {
-    p = cmd+sizeof("Shell val ")-1;
-    if (UTIL1_xatoi(&p, &val)==ERR_OK) {
-      SHELL_val = val;
-      *handled = TRUE;
-    } else {
-      return ERR_FAILED; /* wrong format of command? */
-    }
-  }
-  return ERR_OK;
+	if (UTIL1_strcmp((char*)cmd, CLS1_CMD_HELP) == 0
+			|| UTIL1_strcmp((char*)cmd, "Shell help") == 0) {
+		*handled = TRUE;
+		return SHELL_PrintHelp(io);
+	} else if (UTIL1_strcmp((char*)cmd, CLS1_CMD_STATUS) == 0
+			|| UTIL1_strcmp((char*)cmd, "Shell status") == 0) {
+		*handled = TRUE;
+		return SHELL_PrintStatus(io);
+	} else if (UTIL1_strncmp(cmd, "Shell val ", sizeof("Shell val ")-1) == 0) {
+		p = cmd + sizeof("Shell val ") - 1;
+		if (UTIL1_xatoi(&p, &val) == ERR_OK) {
+			SHELL_val = val;
+			*handled = TRUE;
+		} else {
+			return ERR_FAILED; /* wrong format of command? */
+		}
+	}
+	return ERR_OK;
 }
 
 void SHELL_ParseCmd(uint8_t *cmd) {
-  (void)CLS1_ParseWithCommandTable(cmd, ios[0].stdio, CmdParserTable);
+	(void) CLS1_ParseWithCommandTable(cmd, ios[0].stdio, CmdParserTable);
 }
 
 #if PL_CONFIG_HAS_RTOS
 static void ShellTask(void *pvParameters) {
-  int i;
-  /* \todo Extend as needed */
+	int i;
+	/* \todo Extend as needed */
 
-  (void)pvParameters; /* not used */
-  /* initialize buffers */
-  for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
-    ios[i].buf[0] = '\0';
-  }
-  SHELL_SendString("Shell task started!\r\n");
-#if CLS1_DEFAULT_SERIAL
-  (void)CLS1_ParseWithCommandTable((unsigned char*)CLS1_CMD_HELP, ios[0].stdio, CmdParserTable);
-#endif
-  for(;;) {
-    /* process all I/Os */
-    for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
-      (void)CLS1_ReadAndParseWithCommandTable(ios[i].buf, ios[i].bufSize, ios[i].stdio, CmdParserTable);
-    }
-    vTaskDelay(pdMS_TO_TICKS(10));
-  } /* for */
+	(void) pvParameters; /* not used */
+	/* initialize buffers */
+	for (i = 0; i < sizeof(ios) / sizeof(ios[0]); i++) {
+		ios[i].buf[0] = '\0';
+	}
+	SHELL_SendString("Shell task started!\r\n");
+	(void) CLS1_ParseWithCommandTable((unsigned char*) CLS1_CMD_HELP,
+			ios[0].stdio, CmdParserTable);
+	for (;;) {
+		/* process all I/Os */
+		for (i = 0; i < sizeof(ios) / sizeof(ios[0]); i++) {
+			(void) CLS1_ReadAndParseWithCommandTable(ios[i].buf, ios[i].bufSize,
+					ios[i].stdio, CmdParserTable);
+		}
+#if PL_CONFIG_HAS_SHELL_QUEUE && PL_CONFIG_SQUEUE_SINGLE_CHAR
+		{
+			/*! \todo Handle shell queue */
+			unsigned char ch;
+
+			while((ch=SQUEUE_ReceiveChar()) && ch!='\0') {
+				SHELL_stdio.stdOut(ch);
+			}
+		}
+#elif PL_CONFIG_HAS_SHELL_QUEUE /* !PL_CONFIG_SQUEUE_SINGLE_CHAR */
+		{
+			const unsigned char *msg;
+
+			msg = SQUEUE_ReceiveMessage();
+			if (msg != NULL) {
+				CLS1_SendStr(msg, SHELL_stdio.stdOut);
+				vPortFree((void*) msg);
+			}
+		}
+#endif /* PL_CONFIG_HAS_SHELL_QUEUE */
+		vTaskDelay(pdMS_TO_TICKS(10));
+	} /* for */
 }
 #endif /* PL_CONFIG_HAS_RTOS */
 
 void SHELL_Init(void) {
-  SHELL_val = 0;
-  CLS1_SetStdio(SHELL_GetStdio()); /* set default standard I/O to RTT */
+	SHELL_val = 0;
+	CLS1_SetStdio(SHELL_GetStdio()); /* set default standard I/O to RTT */
 #if !CLS1_DEFAULT_SERIAL && PL_CONFIG_CONFIG_HAS_BLUETOOTH
-  (void)CLS1_SetStdio(&BT_stdio); /* use the Bluetooth stdio as default */
+	(void)CLS1_SetStdio(&BT_stdio); /* use the Bluetooth stdio as default */
 #endif
 #if PL_CONFIG_HAS_RTOS
-  if (FRTOS1_xTaskCreate(ShellTask, "Shell", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY+1, NULL) != pdPASS) {
-    for(;;){} /* error */
-  }
+	if (FRTOS1_xTaskCreate(ShellTask, "Shell", 500, NULL, tskIDLE_PRIORITY+1,
+			NULL) != pdPASS) {
+		for (;;) {
+		} /* error */
+	}
 #endif
 }
 
