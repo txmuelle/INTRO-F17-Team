@@ -105,7 +105,6 @@ static void ShowTextOnLCD(unsigned char *text) {
 	x = 0;
 	y = 10;
 	FDisp1_WriteString(text, GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
-	//PDC1_WriteLineStr(1, "hello");
 	GDisp1_UpdateFull();
 }
 
@@ -182,6 +181,7 @@ void LCD_Init(void) {
 		for (;;) {
 		} /* error! probably out of memory */
 	}
+	ShowTextOnLCD("HelloHelloHellooo");
 #if PL_CONFIG_HAS_LCD_MENU
 	LCDMenu_Init();
 #endif
