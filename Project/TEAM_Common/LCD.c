@@ -31,61 +31,74 @@ static bool requestLCDUpdate = FALSE;
 typedef enum {
 	LCD_MENU_ID_NONE = LCDMENU_ID_NONE, /* special value! */
 	LCD_MENU_ID_MAIN,
+	LCD_MENU_ID_GAME,
 	LCD_MENU_ID_BACKLIGHT,
 	LCD_MENU_ID_NUM_VALUE,
 }LCD_MenuIDs;
 
-static LCDMenu_StatusFlags ValueChangeHandler(const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event, void **dataP) {
+static LCDMenu_StatusFlags ValueChangeHandler(
+		const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event,
+		void **dataP) {
 	static int value = 0;
 	static uint8_t valueBuf[16];
 	LCDMenu_StatusFlags flags = LCDMENU_STATUS_FLAGS_NONE;
 
-	(void)item;
-	if (event==LCDMENU_EVENT_GET_TEXT) {
-		UTIL1_strcpy(valueBuf, sizeof(valueBuf), (uint8_t*)"Val: ");
+	(void) item;
+	if (event == LCDMENU_EVENT_GET_TEXT) {
+		UTIL1_strcpy(valueBuf, sizeof(valueBuf), (uint8_t*) "Val: ");
 		UTIL1_strcatNum32s(valueBuf, sizeof(valueBuf), value);
 		*dataP = valueBuf;
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-	} else if (event==LCDMENU_EVENT_GET_EDIT_TEXT) {
-		UTIL1_strcpy(valueBuf, sizeof(valueBuf), (uint8_t*)"[-] ");
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+	} else if (event == LCDMENU_EVENT_GET_EDIT_TEXT) {
+		UTIL1_strcpy(valueBuf, sizeof(valueBuf), (uint8_t*) "[-] ");
 		UTIL1_strcatNum32s(valueBuf, sizeof(valueBuf), value);
-		UTIL1_strcat(valueBuf, sizeof(valueBuf), (uint8_t*)" [+]");
+		UTIL1_strcat(valueBuf, sizeof(valueBuf), (uint8_t*) " [+]");
 		*dataP = valueBuf;
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-	} else if (event==LCDMENU_EVENT_DECREMENT) {
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+	} else if (event == LCDMENU_EVENT_DECREMENT) {
 		value--;
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-	} else if (event==LCDMENU_EVENT_INCREMENT) {
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+	} else if (event == LCDMENU_EVENT_INCREMENT) {
 		value++;
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
 	}
 	return flags;
 }
 
-static LCDMenu_StatusFlags BackLightMenuHandler(const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event, void **dataP) {
+static LCDMenu_StatusFlags BackLightMenuHandler(
+		const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event,
+		void **dataP) {
 	LCDMenu_StatusFlags flags = LCDMENU_STATUS_FLAGS_NONE;
 
-	(void)item;
-	if (event==LCDMENU_EVENT_GET_TEXT && dataP!=NULL) {
+	(void) item;
+	if (event == LCDMENU_EVENT_GET_TEXT && dataP != NULL) {
 		if (LedBackLightisOn) {
 			*dataP = "Backlight is ON";
 		} else {
 			*dataP = "Backlight is OFF";
 		}
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-	} else if (event==LCDMENU_EVENT_ENTER) { /* toggle setting */
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+	} else if (event == LCDMENU_EVENT_ENTER) { /* toggle setting */
 		LedBackLightisOn = !LedBackLightisOn;
-		flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+		flags |= LCDMENU_STATUS_FLAGS_HANDLED
+		| LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
 	}
 	return flags;
 }
 
-static const LCDMenu_MenuItem menus[] =
-{/* id,                                     grp, pos,   up,                       down,                             text,           callback                      flags                  */
-	{	LCD_MENU_ID_MAIN, 0, 0, LCD_MENU_ID_NONE, LCD_MENU_ID_BACKLIGHT, "General", NULL, LCDMENU_MENU_FLAGS_NONE},
-	{	LCD_MENU_ID_BACKLIGHT, 1, 0, LCD_MENU_ID_MAIN, LCD_MENU_ID_NONE, NULL, BackLightMenuHandler, LCDMENU_MENU_FLAGS_NONE},
-	{	LCD_MENU_ID_NUM_VALUE, 1, 1, LCD_MENU_ID_MAIN, LCD_MENU_ID_NONE, NULL, ValueChangeHandler, LCDMENU_MENU_FLAGS_EDITABLE},
-};
+static const LCDMenu_MenuItem menus[] = {/* id,                                     grp, pos,   up,                       down,                             text,           callback                      flags                  */
+	{	LCD_MENU_ID_MAIN, 0, 0, LCD_MENU_ID_NONE, LCD_MENU_ID_BACKLIGHT, "Test", NULL,
+		LCDMENU_MENU_FLAGS_NONE}, {LCD_MENU_ID_GAME, 0, 1, LCD_MENU_ID_NONE,
+		LCD_MENU_ID_BACKLIGHT, "Game", NULL, LCDMENU_MENU_FLAGS_NONE}, {
+		LCD_MENU_ID_BACKLIGHT, 1, 0, LCD_MENU_ID_MAIN, LCD_MENU_ID_NONE, NULL,
+		BackLightMenuHandler, LCDMENU_MENU_FLAGS_NONE}, {
+		LCD_MENU_ID_NUM_VALUE, 1, 1, LCD_MENU_ID_MAIN, LCD_MENU_ID_NONE, NULL,
+		ValueChangeHandler, LCDMENU_MENU_FLAGS_EDITABLE},};
 
 /*uint8_t LCD_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *data, RNWK_ShortAddrType srcAddr, bool *handled, RPHY_PacketDesc *packet) {
  (void)size;
@@ -114,12 +127,13 @@ static void LCD_Task(void *param) {
 	ShowTextOnLCD("Press a key!");
 	DrawText();
 	/* \todo extend */
+
 	DrawFont();
 	DrawLines(); /*! \todo */
 	DrawCircles();
 #endif
 #if PL_CONFIG_HAS_LCD_MENU
-	LCDMenu_InitMenu(menus, sizeof(menus)/sizeof(menus[0]), 1);
+	LCDMenu_InitMenu(menus, sizeof(menus) / sizeof(menus[0]), 1);
 	LCDMenu_OnEvent(LCDMENU_EVENT_DRAW, NULL);
 #endif
 	for (;;) {
@@ -128,6 +142,10 @@ static void LCD_Task(void *param) {
 		} else {
 			LCD_LED_Off(); /* LCD backlight off */
 		}
+		for (int i = 0; i < 30; i++) {
+			GDisp1_DrawCircle(20, 20, i+1, GDisp1_COLOR_BLACK);
+		}
+		GDisp1_UpdateFull();
 #if PL_CONFIG_HAS_LCD_MENU
 		if (requestLCDUpdate) {
 			requestLCDUpdate = FALSE;
@@ -181,9 +199,10 @@ void LCD_Init(void) {
 		for (;;) {
 		} /* error! probably out of memory */
 	}
-	ShowTextOnLCD("HelloHelloHellooo");
+	//ShowTextOnLCD("HelloHelloHellooo");
+
 #if PL_CONFIG_HAS_LCD_MENU
-	LCDMenu_Init();
+	//LCDMenu_Init();
 #endif
 }
 #endif /* PL_CONFIG_HAS_LCD */
