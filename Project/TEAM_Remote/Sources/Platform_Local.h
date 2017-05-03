@@ -19,13 +19,13 @@
 #define PL_LOCAL_CONFIG_NOF_KEYS            (0) /* number of keys, 0 to 7 */
 
 #if PL_LOCAL_CONFIG_NOF_KEYS>0
-  #define PL_LOCAL_CONFIG_KEY_1_ISR         (1) /* if SW1 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_2_ISR         (1) /* if SW2 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_3_ISR         (1) /* if SW3 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_4_ISR         (1) /* if SW4 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_5_ISR         (1) /* if SW5 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_6_ISR         (0) /* if SW6 is using interrupts */
-  #define PL_LOCAL_CONFIG_KEY_7_ISR         (0) /* if SW7 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_1_ISR         (1) /* if SW1 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_2_ISR         (1) /* if SW2 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_3_ISR         (1) /* if SW3 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_4_ISR         (1) /* if SW4 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_5_ISR         (1) /* if SW5 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_6_ISR         (0) /* if SW6 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_7_ISR         (0) /* if SW7 is using interrupts */
 #endif
 
 /* set of defines to disable a functionality: if it is defined, it will disable it in the common part */
@@ -55,7 +55,7 @@
 
 /* robot hardware functionality */
 #define PL_LOCAL_CONFIG_HAS_MOTOR_DISABLED                /* disable motor */
-#define PL_LOCAL_CONFIG_HAS_REFLECTANCE_DISABLED          /* disable IR reflectance sensor */
+//#define PL_LOCAL_CONFIG_HAS_REFLECTANCE_DISABLED          /* disable IR reflectance sensor */
 #define PL_LOCAL_CONFIG_HAS_QUADRATURE_DISABLED           /* disable quadrature encoder */
 #define PL_LOCAL_CONFIG_HAS_MOTOR_TACHO_DISABLED          /* disable tacho */
 #define PL_LOCAL_CONFIG_HAS_MPC4728_DISABLED              /* disable MPC4728 (only for V1 robot) */
