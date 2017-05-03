@@ -16,14 +16,14 @@
 
 /* platform hardware configuration */
 #define PL_LOCAL_CONFIG_NOF_LEDS            (1) /* number of LEDs, 0 to 3 */
-#define PL_LOCAL_CONFIG_NOF_KEYS            (0) /* number of keys, 0 to 7 */
+#define PL_LOCAL_CONFIG_NOF_KEYS            (7) /* number of keys, 0 to 7 */
 
 #if PL_LOCAL_CONFIG_NOF_KEYS>0
-#define PL_LOCAL_CONFIG_KEY_1_ISR         (1) /* if SW1 is using interrupts */
-#define PL_LOCAL_CONFIG_KEY_2_ISR         (1) /* if SW2 is using interrupts */
-#define PL_LOCAL_CONFIG_KEY_3_ISR         (1) /* if SW3 is using interrupts */
-#define PL_LOCAL_CONFIG_KEY_4_ISR         (1) /* if SW4 is using interrupts */
-#define PL_LOCAL_CONFIG_KEY_5_ISR         (1) /* if SW5 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_1_ISR         (0) /* if SW1 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_2_ISR         (0) /* if SW2 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_3_ISR         (0) /* if SW3 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_4_ISR         (0) /* if SW4 is using interrupts */
+#define PL_LOCAL_CONFIG_KEY_5_ISR         (0) /* if SW5 is using interrupts */
 #define PL_LOCAL_CONFIG_KEY_6_ISR         (0) /* if SW6 is using interrupts */
 #define PL_LOCAL_CONFIG_KEY_7_ISR         (0) /* if SW7 is using interrupts */
 #endif
@@ -51,7 +51,7 @@
 #define PL_LOCAL_CONFIG_HAS_CONTROL_SENDER_DISABLED       /* disable that we are the sender (otherwise we are the receiver) */
 #define PL_LOCAL_CONFIG_HAS_JOYSTICK_DISABLED             /* disable joystick */
 //#define PL_LOCAL_CONFIG_HAS_LCD_DISABLED                  /* disable LCD */
-#define PL_LOCAL_CONFIG_HAS_LCD_MENU_DISABLED             /* disable LCD menu */
+//#define PL_LOCAL_CONFIG_HAS_LCD_MENU_DISABLED             /* disable LCD menu */
 
 /* robot hardware functionality */
 #define PL_LOCAL_CONFIG_HAS_MOTOR_DISABLED                /* disable motor */
