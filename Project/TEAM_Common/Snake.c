@@ -32,6 +32,7 @@
 #define RIGHT 2
 #define DOWN  3
 #define LEFT  4
+#define PUSH  5
 
 /* frame size */
 #define MAX_WIDTH  GDisp1_GetWidth()
@@ -51,9 +52,12 @@ static GDisp1_PixelDim xFood = 0, yFood = 0; /* location of food */
 
 /* directions */
 static int dr = 0, dc = 1;
-static bool left = FALSE, right = TRUE, up = FALSE, down = FALSE;
+static bool left = FALSE, right = TRUE, up = FALSE, down = FALSE, push = FALSE;
 
 #define SNAKE_MAX_LEN   48 /* maximum length of snake */
+
+/* Button pressed flag*/
+bool buttonPressedFlag = 0;
 
 /* vector containing the coordinates of the individual parts */
 /* of the snake {cols[0], row[0]}, corresponding to the head */
@@ -65,6 +69,14 @@ static GDisp1_PixelDim snakeRow[SNAKE_MAX_LEN];
 
 static void waitAnyButton(void) {
 	/*! \todo Wait for any button pressed */
+	buttonPressedFlag = 0;
+	for (;;) {
+
+		if (buttonPressedFlag) {
+			buttonPressedFlag = 0;
+			return;
+		}
+	}
 }
 
 static void delay(int ms) {
@@ -90,50 +102,8 @@ static int random(int min, int max) {
 	return cnt;
 }
 
-static void showPause(void) {
-	FDisp1_PixelDim x, y;
-	FDisp1_PixelDim charHeight, totalHeight;
-	GFONT_Callbacks *font = GFONT1_GetFont();
-	uint8_t buf[16];
-
-	FDisp1_GetFontHeight(font, &charHeight, &totalHeight);
-	GDisp1_Clear();
-
-	x = (GDisp1_GetWidth()
-			- FDisp1_GetStringWidth((unsigned char*) "Pause", font, NULL)) / 2; /* center text */
-	y = 0;
-	FDisp1_WriteString((unsigned char*) "Pause", GDisp1_COLOR_BLACK, &x, &y,
-			font);
-
-	x = 0;
-	y += totalHeight;
-	FDisp1_WriteString((unsigned char*) "Level: ", GDisp1_COLOR_BLACK, &x, &y,
-			font);
-	UTIL1_Num16sToStr(buf, sizeof(buf), level);
-	FDisp1_WriteString(buf, GDisp1_COLOR_BLACK, &x, &y, font);
-
-	x = 0;
-	y += totalHeight;
-	FDisp1_WriteString((unsigned char*) "Points: ", GDisp1_COLOR_BLACK, &x, &y,
-			font);
-	UTIL1_Num16sToStr(buf, sizeof(buf), point - 1);
-	FDisp1_WriteString(buf, GDisp1_COLOR_BLACK, &x, &y, font);
-
-	x = (GDisp1_GetWidth()
-			- FDisp1_GetStringWidth((unsigned char*) "(Press Button)", font,
-			NULL)) / 2; /* center text */
-	y += totalHeight;
-	FDisp1_WriteString((unsigned char*) "(Press Button)", GDisp1_COLOR_BLACK,
-			&x, &y, font);
-
-	GDisp1_UpdateFull();
-
-	waitAnyButton();
-	GDisp1_Clear();
-	GDisp1_UpdateFull();
-}
-
 static void resetGame(void) {
+
 	int i;
 	FDisp1_PixelDim x, y;
 	FDisp1_PixelDim charHeight, totalHeight;
@@ -192,6 +162,8 @@ static void resetGame(void) {
 	left = FALSE;
 	dr = 0;
 	dc = 1;
+
+	gameStatus = GAME_STATUS_RUN;
 }
 
 static void drawSnake(void) {
@@ -216,8 +188,8 @@ static void eatFood(void) {
 	point++;
 	snakeLen += 2;
 	/* new coordinates food randomly */
-	xFood = random(1, MAX_WIDTH - 3);
-	yFood = random(1, MAX_HEIGHT - 3);
+	xFood = random(3, MAX_WIDTH - 5);
+	yFood = random(3, MAX_HEIGHT - 5);
 	drawSnake();
 }
 
@@ -233,6 +205,7 @@ static void upLevel(void) {
 void direc(int d) {
 	switch (d) {
 	case UP: {
+		buttonPressedFlag = 1;
 		left = FALSE;
 		right = FALSE;
 		up = TRUE;
@@ -242,6 +215,7 @@ void direc(int d) {
 	}
 		break;
 	case RIGHT: {
+		buttonPressedFlag = 1;
 		left = FALSE;
 		right = TRUE;
 		up = FALSE;
@@ -251,6 +225,7 @@ void direc(int d) {
 	}
 		break;
 	case DOWN: {
+		buttonPressedFlag = 1;
 		left = FALSE;
 		right = FALSE;
 		up = FALSE;
@@ -260,12 +235,20 @@ void direc(int d) {
 	}
 		break;
 	case LEFT: {
+		buttonPressedFlag = 1;
 		left = TRUE;
 		right = FALSE;
 		up = FALSE;
 		down = FALSE;
 		dr = 0;
 		dc = -1;
+	}
+		break;
+	case PUSH: {
+		buttonPressedFlag = 1;
+		if (gameStatus == GAME_STATUS_RUN) {
+			push = TRUE;
+		}
 	}
 		break;
 	}
@@ -303,11 +286,14 @@ void moveSnake(void) {
 	}
 	/* START/PAUSE */
 	if ("start/pause event") {
-		showPause();
+		//showPause();
 	}
+
 }
 
 static void gameover(void) {
+	gameStatus = GAME_STATUS_END;
+	buttonPressedFlag = 0;
 	FDisp1_PixelDim x, y;
 	FDisp1_PixelDim charHeight, totalHeight;
 	GFONT_Callbacks *font = GFONT1_GetFont();
@@ -344,10 +330,58 @@ static void gameover(void) {
 	FDisp1_WriteString((unsigned char*) "(Press Button)", GDisp1_COLOR_BLACK,
 			&x, &y, font);
 	GDisp1_UpdateFull();
-	delay(4000);
+	delay(500);
 	waitAnyButton();
 
 	resetGame();
+}
+
+void showPause(void) {
+
+	gameStatus = GAME_STATUS_PAUSE;
+	buttonPressedFlag = 0;
+	FDisp1_PixelDim x, y;
+	FDisp1_PixelDim charHeight, totalHeight;
+	GFONT_Callbacks *font = GFONT1_GetFont();
+	uint8_t buf[16];
+
+	GDisp1_Clear();
+	FDisp1_GetFontHeight(font, &charHeight, &totalHeight);
+
+	x = (GDisp1_GetWidth()
+			- FDisp1_GetStringWidth((unsigned char*) "Pause", font, NULL)) / 2; /* center text */
+	y = 0;
+	FDisp1_WriteString((unsigned char*) "Pause", GDisp1_COLOR_BLACK, &x, &y,
+			font);
+
+	x = 0;
+	y += totalHeight;
+	FDisp1_WriteString((unsigned char*) "Level: ", GDisp1_COLOR_BLACK, &x, &y,
+			font);
+	UTIL1_Num16sToStr(buf, sizeof(buf), level);
+	FDisp1_WriteString(buf, GDisp1_COLOR_BLACK, &x, &y, font);
+
+	x = 0;
+	y += totalHeight;
+	FDisp1_WriteString((unsigned char*) "Points: ", GDisp1_COLOR_BLACK, &x, &y,
+			font);
+	UTIL1_Num16sToStr(buf, sizeof(buf), point - 1);
+	FDisp1_WriteString(buf, GDisp1_COLOR_BLACK, &x, &y, font);
+
+	x = (GDisp1_GetWidth()
+			- FDisp1_GetStringWidth((unsigned char*) "(Press Button)", font,
+			NULL)) / 2; /* center text */
+	y += totalHeight;
+	FDisp1_WriteString((unsigned char*) "(Press Button)", GDisp1_COLOR_BLACK,
+			&x, &y, font);
+
+	GDisp1_UpdateFull();
+	delay(500);
+	waitAnyButton();
+
+	gameStatus = GAME_STATUS_RUN;
+	push=FALSE;
+	snake();
 }
 
 static void snake(void) {
@@ -384,6 +418,7 @@ static void snake(void) {
 		/* snake touches the left wall */
 		if (xSnake == 1) {
 			gameover();
+
 		}
 		if (xSnake > 1) {
 			drawSnake();
@@ -418,6 +453,11 @@ static void snake(void) {
 		if (ySnake < MAX_HEIGHT - 1) {
 			drawSnake();
 		}
+	}
+	/* PUSH */
+	if (push) {
+		/* button pushed */
+		showPause();
 	}
 }
 
