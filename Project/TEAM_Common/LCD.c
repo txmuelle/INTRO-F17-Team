@@ -36,6 +36,7 @@ typedef enum {
     LCD_MENU_ID_BACKLIGHT,
     LCD_MENU_ID_NUM_VALUE,
   LCD_MENU_ID_SNAKE,
+    LCD_MENU_ID_GAMES,
 } LCD_MenuIDs;
 
 static LCDMenu_StatusFlags ValueChangeHandler(const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event, void **dataP) {
@@ -65,6 +66,22 @@ static LCDMenu_StatusFlags ValueChangeHandler(const struct LCDMenu_MenuItem_ *it
   return flags;
 }
 
+static LCDMenu_StatusFlags SnakeMenuHandler(const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event, void **dataP) {
+  LCDMenu_StatusFlags flags = LCDMENU_STATUS_FLAGS_NONE;
+
+  (void)item;
+  if (event==LCDMENU_EVENT_ENTER) { /* toggle setting */
+    /*? \ Todo go here to snake Game*/
+	  FDisp1_PixelDim x = 0;
+	  FDisp1_PixelDim y = 10;
+	  FDisp1_WriteString("Snake here", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
+	  GDisp1_UpdateFull();
+	flags |= LCDMENU_STATUS_FLAGS_HANDLED;
+   // flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+  }
+  return flags;
+}
+
 static LCDMenu_StatusFlags BackLightMenuHandler(const struct LCDMenu_MenuItem_ *item, LCDMenu_EventType event, void **dataP) {
   LCDMenu_StatusFlags flags = LCDMENU_STATUS_FLAGS_NONE;
 
@@ -86,7 +103,8 @@ static LCDMenu_StatusFlags BackLightMenuHandler(const struct LCDMenu_MenuItem_ *
 static const LCDMenu_MenuItem menus[] =
 {/* id,                                     grp, pos,   up,                       down,                             text,           callback                      flags                  */
     {LCD_MENU_ID_MAIN,                        0,   0,   LCD_MENU_ID_NONE,         LCD_MENU_ID_BACKLIGHT,            "General",      NULL,                         LCDMENU_MENU_FLAGS_NONE},
-	{LCD_MENU_ID_SNAKE,                       0,   1,   LCD_MENU_ID_NONE,         LCD_MENU_ID_SNAKE,                "Snake",        NULL,                         LCDMENU_MENU_FLAGS_NONE},
+	{LCD_MENU_ID_GAMES,                       0,   1,   LCD_MENU_ID_NONE,         LCD_MENU_ID_SNAKE,                "Games",        NULL,                         LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SNAKE,                     2,   0,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 "Snake",        SnakeMenuHandler,             LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_BACKLIGHT,                 1,   0,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 NULL,           BackLightMenuHandler,         LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_NUM_VALUE,                 1,   1,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 NULL,           ValueChangeHandler,           LCDMENU_MENU_FLAGS_EDITABLE},
 };
