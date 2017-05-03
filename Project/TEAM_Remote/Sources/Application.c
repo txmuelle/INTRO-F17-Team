@@ -102,6 +102,7 @@ void APP_EventHandler(EVNT_Handle event) {
 		WAIT1_Waitms(50);
 		LED1_Off();
 
+		direc(2);
 		moveSnake();
 
 
@@ -135,6 +136,8 @@ void APP_EventHandler(EVNT_Handle event) {
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
+		direc(4);
+		moveSnake();
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=3
@@ -144,7 +147,7 @@ void APP_EventHandler(EVNT_Handle event) {
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		direc(LEFT);
+		direc(3);
 		moveSnake();
 		break;
 #endif
@@ -164,6 +167,8 @@ void APP_EventHandler(EVNT_Handle event) {
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
+		direc(1);
+		moveSnake();
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=6

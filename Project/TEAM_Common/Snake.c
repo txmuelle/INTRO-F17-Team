@@ -274,28 +274,28 @@ void direc(int d) {
 void moveSnake(void) {
 	/* LEFT */
 	/*! \todo handle events */
-	if ("left event" && !right) {
+	if ("left event" && !right && !down && !up) {
 		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
 			direc(LEFT);
 		}
 		return;
 	}
 	/* RIGHT */
-	if ("right event" && !left) {
+	if ("right event" && !left && !down && !up) {
 		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
 			direc(RIGHT);
 		}
 		return;
 	}
 	/* UP */
-	if ("up event" && !down) {
+	if ("up event" && !down && !left && !right) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(UP);
 		}
 		return;
 	}
 	/* DOWN */
-	if ("down event" && !up) {
+	if ("down event" && !up && !right && !left) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(DOWN);
 		}
