@@ -18,6 +18,7 @@
 #include "LCD_LED.h"
 #include "Event.h"
 #include "FRTOS1.h"
+#include "Snake.h"
 #if PL_CONFIG_HAS_RADIO
   #include "RApp.h"
 #endif
@@ -72,10 +73,7 @@ static LCDMenu_StatusFlags SnakeMenuHandler(const struct LCDMenu_MenuItem_ *item
   (void)item;
   if (event==LCDMENU_EVENT_ENTER) { /* toggle setting */
     /*? \ Todo go here to snake Game*/
-	  FDisp1_PixelDim x = 0;
-	  FDisp1_PixelDim y = 10;
-	  FDisp1_WriteString("Snake here", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
-	  GDisp1_UpdateFull();
+    SNAKE_Init();
 	flags |= LCDMENU_STATUS_FLAGS_HANDLED;
    // flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
   }
@@ -141,35 +139,40 @@ static void DrawFont(void) {
   GDisp1_UpdateFull();
   x = 0;
   y = 10;
-  FDisp1_WriteString("Hello World!", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
+  FDisp1_WriteString("by", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
   GDisp1_UpdateFull();
-  vTaskDelay(pdMS_TO_TICKS(500));
+  vTaskDelay(pdMS_TO_TICKS(800));
   x = 0;
   y += GFONT1_GetBoxHeight();
-  FDisp1_WriteString("with Fonts!", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
+  FDisp1_WriteString("Tamara Toma", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
   GDisp1_UpdateFull();
-  WAIT1_Waitms(1000);
+  vTaskDelay(pdMS_TO_TICKS(800));
+  x = 0;
+  y += GFONT1_GetBoxHeight();
+  FDisp1_WriteString("Urs Mueller", GDisp1_COLOR_BLACK, &x, &y, GFONT1_GetFont());
+  GDisp1_UpdateFull();
+  WAIT1_Waitms(2000);
 }
 
 static void DrawText(void) {
   GDisp1_Clear();
   GDisp1_UpdateFull();
-  PDC1_WriteLineStr(1, "hello");
-  vTaskDelay(pdMS_TO_TICKS(200));
-  PDC1_WriteLineStr(2, "world");
-  vTaskDelay(pdMS_TO_TICKS(200));
-  PDC1_WriteLineStr(3, "out");
-  vTaskDelay(pdMS_TO_TICKS(200));
-  PDC1_WriteLineStr(4, "there");
-  vTaskDelay(pdMS_TO_TICKS(200));
+  PDC1_WriteLineStr(1, "Welcome");
+  vTaskDelay(pdMS_TO_TICKS(400));
+  PDC1_WriteLineStr(2, "to our");
+  vTaskDelay(pdMS_TO_TICKS(400));
+  PDC1_WriteLineStr(3, "Intro");
+  vTaskDelay(pdMS_TO_TICKS(400));
+  PDC1_WriteLineStr(4, "Project");
+  vTaskDelay(pdMS_TO_TICKS(400));
   PDC1_WriteLineStr(5, "!!!!!");
-  vTaskDelay(pdMS_TO_TICKS(200));
+  vTaskDelay(pdMS_TO_TICKS(1000));
 }
 
 static void LCD_Task(void *param) {
   (void)param; /* not used */
 #if 1
-  ShowTextOnLCD("Press a key!");
+  //ShowTextOnLCD("Press a key!");
   DrawText();
   /* \todo extend */
   DrawFont();
