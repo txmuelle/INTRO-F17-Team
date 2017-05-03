@@ -73,6 +73,7 @@ static LCDMenu_StatusFlags SnakeMenuHandler(const struct LCDMenu_MenuItem_ *item
   (void)item;
   if (event==LCDMENU_EVENT_ENTER) { /* toggle setting */
     /*? \ Todo go here to snake Game*/
+	appStatus = APP_STATUS_FLAGS_SNAKE;
     SNAKE_Init();
 	flags |= LCDMENU_STATUS_FLAGS_HANDLED;
    // flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;

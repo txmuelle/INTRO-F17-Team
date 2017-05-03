@@ -51,7 +51,7 @@
 #include "LCDMenu.h"
 #endif
 
-//LCDMenu_MenuItem menu;
+LCDMenu_MenuItem menu;
 
 #if PL_CONFIG_HAS_EVENTS
 
@@ -96,15 +96,14 @@ void APP_EventHandler(EVNT_Handle event) {
 		break;
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_RIGHT, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_RIGHT, &menu);
 		BtnMsg(1, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-
+		if(appStatus == APP_STATUS_FLAGS_SNAKE){
 		direc(2);
-		moveSnake();
-
+		moveSnake();}
 
 #if PL_CONFIG_HAS_BUZZER
 		(void)BUZ_PlayTune(BUZ_TUNE_BUTTON);
@@ -131,29 +130,31 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
 	case EVNT_SW2_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_LEFT, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_LEFT, &menu);
 		BtnMsg(2, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
+		if(appStatus == APP_STATUS_FLAGS_SNAKE){
 		direc(4);
-		moveSnake();
+		moveSnake();}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=3
 	case EVNT_SW3_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_DOWN, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_DOWN, &menu);
 		BtnMsg(3, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
+		if(appStatus == APP_STATUS_FLAGS_SNAKE){
 		direc(3);
-		moveSnake();
+		moveSnake();}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=4
 	case EVNT_SW4_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_ENTER, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_ENTER, &menu);
 		BtnMsg(4, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
@@ -162,18 +163,19 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
 #if PL_CONFIG_NOF_KEYS>=5
 	case EVNT_SW5_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_UP, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_UP, &menu);
 		BtnMsg(5, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
+		if(appStatus == APP_STATUS_FLAGS_SNAKE){
 		direc(1);
-		moveSnake();
+		moveSnake();}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=6
 	case EVNT_SW6_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_INCREMENT, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_INCREMENT, &menu);
 		BtnMsg(6, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
@@ -182,7 +184,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
 #if PL_CONFIG_NOF_KEYS>=7
 	case EVNT_SW7_PRESSED:
-		//LCDMenu_OnEvent(LCDMENU_EVENT_DECREMENT, &menu);
+		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_DECREMENT, &menu);
 		BtnMsg(7, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
@@ -262,6 +264,7 @@ void APP_Start(void) {
 #endif /* configUSE_TRACE_HOOKS */
 #endif
 	PL_Init();
+	appStatus = APP_STATUS_FLAGS_MENU;
 #if PL_CONFIG_HAS_EVENTS
 	EVNT_SetEvent(EVNT_STARTUP);
 #endif
@@ -271,7 +274,7 @@ void APP_Start(void) {
 #if PL_CONFIG_HAS_RTOS
 	RTOS_Run();
 	//SHELL_Init();
-	SNAKE_Init();
+	//SNAKE_Init();
 	//Labs: Tasks
 	vTaskStartScheduler(); /* start the RTOS, create the IDLE task and run my tasks (if any) */
 	/* does usually not return! */
