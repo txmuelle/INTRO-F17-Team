@@ -16,6 +16,7 @@
 #include "KeyDebounce.h"
 #include "KIN1.h"
 #include "Trigger.h"
+#include "Motor.h"
 #if PL_CONFIG_HAS_SHELL
   #include "CLS1.h"
   #include "Shell.h"
@@ -77,6 +78,12 @@ void APP_EventHandler(EVNT_Handle event) {
   break;
   case EVNT_SW1_PRESSED: //button short pressed
   {
+
+//	    MOT_MotorDevice *MothandleLeft = MOT_GetMotorHandle(MOT_MOTOR_LEFT);
+//	    MOT_MotorDevice *MothandleRight = MOT_GetMotorHandle(MOT_MOTOR_RIGHT);
+//	    MOT_SetSpeedPercent(MothandleLeft, 100);
+//	    MOT_SetSpeedPercent(MothandleRight, 100);
+
 	    cntr++;
 	    BUZ_PlayTune(BUZ_TUNE_BUTTON);
 	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
@@ -88,6 +95,11 @@ void APP_EventHandler(EVNT_Handle event) {
   break;
   case EVNT_SW1_LPRESSED: //button long pressed
   {
+//	    MOT_MotorDevice *MothandleLeft = MOT_GetMotorHandle(MOT_MOTOR_LEFT);
+//	    MOT_MotorDevice *MothandleRight = MOT_GetMotorHandle(MOT_MOTOR_RIGHT);
+//	    MOT_SetSpeedPercent(MothandleLeft, 0);
+//	    MOT_SetSpeedPercent(MothandleRight, 0);
+
 	  BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
 	  CLS1_printf("You pushed the button long \r\n", SHELL_GetStdio()->stdOut);
   }
