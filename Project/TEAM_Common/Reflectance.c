@@ -142,6 +142,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
   RefCnt_TValueType timerVal;
   /*! \todo Consider reentrancy and mutual exclusion! */
 
+
   LED_IR_On(); /* IR LED's on */
   WAIT1_Waitus(200);
   for(i=0;i<REF_NOF_SENSORS;i++) {
@@ -154,6 +155,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
     SensorFctArray[i].SetInput(); /* turn I/O line as input */
   }
   (void)RefCnt_ResetCounter(timerHandle); /* reset timer counter */
+  EnterCritical();
   do {
     timerVal = RefCnt_GetCounterValue(timerHandle);
     cnt = 0;
@@ -164,9 +166,13 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         }
       } else { /* have value */
         cnt++;
+        //if(timerVal=Maxtimerval){
+        /*! \todo time out wenn fehler */
+        //}
       }
     }
   } while(cnt!=REF_NOF_SENSORS);
+  ExitCritical();
   LED_IR_Off(); /* IR LED's off */
 }
 
@@ -594,7 +600,7 @@ void REF_Init(void) {
   refState = REF_STATE_INIT;
   timerHandle = RefCnt_Init(NULL);
   /*! \todo You might need to adjust priority or other task settings */
-  if (FRTOS1_xTaskCreate(ReflTask, "Refl", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
+  if (FRTOS1_xTaskCreate(ReflTask, "Refl", 400/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
     for(;;){} /* error */
   }
 }
