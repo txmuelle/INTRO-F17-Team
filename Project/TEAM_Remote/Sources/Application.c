@@ -16,7 +16,6 @@
 #include "CLS1.h"
 #include "KIN1.h"
 #include "RTOS.h"
-#include "Snake.h"
 #include "Shell.h"
 #if PL_CONFIG_HAS_KEYS
 #include "Keys.h"
@@ -247,11 +246,8 @@ void APP_Start(void) {
 #if PL_CONFIG_HAS_SHELL && CLS1_DEFAULT_SERIAL
 	CLS1_SendStr((uint8_t*)"Hello World!\r\n", CLS1_GetStdio()->stdOut);
 #endif
-
-
 #if PL_CONFIG_HAS_RTOS
 	RTOS_Run();
-	SNAKE_Init();
 	//SHELL_Init();
 	//Labs: Tasks
 	vTaskStartScheduler(); /* start the RTOS, create the IDLE task and run my tasks (if any) */
