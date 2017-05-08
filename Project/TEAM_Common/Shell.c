@@ -110,10 +110,14 @@ static void UART_ReceiveChar(uint8_t *p) {
 	}
 }
 
-static CLS1_ConstStdIOType UART_stdio = { .stdIn = UART_ReceiveChar, .stdOut =
-		UART_SendChar, .stdErr = UART_SendChar, .keyPressed = UART_KeyPressed, };
+static CLS1_ConstStdIOType UART_stdio = {
+		.stdIn = UART_ReceiveChar,
+		.stdOut = UART_SendChar,
+		.stdErr = UART_SendChar,
+		.keyPressed = UART_KeyPressed,
+      };
 
-static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
+//static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 #endif
 /********************************************************************/
 
@@ -125,7 +129,8 @@ typedef struct {
 
 static void SHELL_SendChar(uint8_t ch) {
 #if SHELL_CONFIG_HAS_SHELL_RTT
-	RTT1_SendChar(ch);
+	CLS1_SendCharFct(ch, RTT1_SendChar); /* blocking version with timeout */
+	  //RTT1_SendChar(ch); /* this one is not blocking, will loose characters if sending too fast */
 #endif
 #if SHELL_CONFIG_HAS_EXTRA_UART
 	UART_SendChar(ch);
@@ -176,10 +181,12 @@ static bool SHELL_KeyPressed(void) {
 	return FALSE;
 }
 
-CLS1_ConstStdIOType SHELL_stdio = { (CLS1_StdIO_In_FctType) SHELL_ReadChar, /* stdin */
-(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stdout */
-(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stderr */
-SHELL_KeyPressed /* if input is not empty */
+CLS1_ConstStdIOType SHELL_stdio =
+{
+	(CLS1_StdIO_In_FctType) SHELL_ReadChar, /* stdin */
+	(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stdout */
+	(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stderr */
+	SHELL_KeyPressed /* if input is not empty */
 };
 
 static uint8_t SHELL_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
@@ -202,8 +209,10 @@ static const SHELL_IODesc ios[] =
 static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled,
 		const CLS1_StdIOType *io);
 
-static const CLS1_ParseCommandCallback CmdParserTable[] = { CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
-SHELL_ParseCommand, /* our own module parser */
+static const CLS1_ParseCommandCallback CmdParserTable[] =
+{
+	CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
+    SHELL_ParseCommand, /* our own module parser */
 #if FRTOS1_PARSE_COMMAND_ENABLED
 		FRTOS1_ParseCommand, /* FreeRTOS shell parser */
 #endif
