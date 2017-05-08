@@ -25,17 +25,19 @@ void TMR_OnInterrupt(void) {
 	/*! \todo Add code for a blinking LED here */
 
 	static unsigned int cntr = 0;
-#define BLINK_PERIOD_MS 1000
+#define BLINK_PERIOD_MS 1
 
 	cntr++;
 #if PL_CONFIG_HAS_EVENTS
 	if ((cntr % (BLINK_PERIOD_MS / TMR_TICK_MS)) == 0) { /* every two seconds */
-		EVNT_SetEvent(EVNT_LED_HEARTBEAT);
+		//EVNT_SetEvent(EVNT_LED_HEARTBEAT);
+		//TACHO_Sample();
 	}
 
 #endif
 #if PL_CONFIG_HAS_TRIGGER
 	TRG_AddTick();
+	TACHO_Sample();
 #endif
 
 }

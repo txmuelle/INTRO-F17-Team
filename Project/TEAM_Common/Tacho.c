@@ -18,9 +18,11 @@
 #include "FRTOS1.h"
 #include "Timer.h"
 
-#define TACHO_SAMPLE_PERIOD_MS (10)
+#define TACHO_SAMPLE_PERIOD_MS (2) //sollte zwischen 2 und 5 ms sein
   /*!< \todo speed sample period in ms. Make sure that speed is sampled at the given rate. */
-#define NOF_HISTORY (16U+1U)
+//#define NOF_HISTORY (16U+1U)
+#define NOF_HISTORY (5U+1U)
+#define NOF_ROUND_PULSE
   /*!< number of samples for speed calculation (>0):the more, the better, but the slower. */
 
 /*! \todo Check types for position: code shall use the same type as the quadrature counter!!!!! */
@@ -51,6 +53,7 @@ void TACHO_CalcSpeed(void) {
   int32_t deltaLeft, deltaRight, newLeft, newRight, oldLeft, oldRight;
   int32_t speedLeft, speedRight;
   bool negLeft, negRight;
+
 
   EnterCritical();
   oldLeft = (int32_t)TACHO_LeftPosHistory[TACHO_PosHistory_Index]; /* oldest left entry */
@@ -154,6 +157,9 @@ void TACHO_Init(void) {
   TACHO_currLeftSpeed = 0;
   TACHO_currRightSpeed = 0;
   TACHO_PosHistory_Index = 0;
+
+
+ // TACHO_Sample();
 }
 
 #endif /* PL_CONFIG_HAS_MOTOR_TACHO */
