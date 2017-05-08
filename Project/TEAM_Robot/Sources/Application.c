@@ -58,11 +58,13 @@ void APP_EventHandler(EVNT_Handle event) {
   {
 	  int i;
 	  CLS1_SendStr("Welcome Master. I'm starting up and be ready for you soon.\r\n",SHELL_GetStdio()->stdOut);
+#if PL_CONFIG_HAS_BUZZER
 	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
+#endif
 	  for(i=0; i < 3; i++){
 
 	        LED2_Neg();        //blinking the LED on Startup
-	        WAIT1_Waitms(500);
+	        WAIT1_Waitms(100);
 	  }/*for*/
 	  LED2_Off();
   }
@@ -88,9 +90,9 @@ void APP_EventHandler(EVNT_Handle event) {
 	    BUZ_PlayTune(BUZ_TUNE_BUTTON);
 	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
 		/*blink LED1*/
- 		LED1_On();
- 		WAIT1_Waitms(500);
- 		LED1_Off();
+// 		LED1_On();
+// 		WAIT1_Waitms(500);
+// 		LED1_Off();
   }
   break;
   case EVNT_SW1_LPRESSED: //button long pressed
@@ -104,6 +106,9 @@ void APP_EventHandler(EVNT_Handle event) {
 	  CLS1_printf("You pushed the button long \r\n", SHELL_GetStdio()->stdOut);
   }
   break;
+  case EVNT_SW1_RELEASED:
+	  CLS1_printf("You released the button \r\n",cntr ,SHELL_GetStdio()->stdOut);
+
   default:
     break;
    } /* switch */
