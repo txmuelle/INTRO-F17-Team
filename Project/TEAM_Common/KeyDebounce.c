@@ -13,6 +13,7 @@
 #include "Debounce.h"
 #include "Trigger.h"
 #include "Event.h"
+#include "FRTOS1.h"
 
 /*!
  * \brief Returns the state of the keys. This directly reflects the value of the port
@@ -66,6 +67,18 @@ static DBNC_KeySet KEYDBNC_GetKeys(void) {
  */
 static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
   switch(event) {
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS
+  {
+    uint8_t buf[48];
+
+    UTIL1_strcpy(buf, sizeof(buf), "KEYDBNC_OnDebounceEvent: ");
+    UTIL1_strcatNum32u(buf, sizeof(buf), event);
+    UTIL1_strcat(buf, sizeof(buf), ", keys: ");
+    UTIL1_strcatNum32u(buf, sizeof(buf), keys);
+    UTIL1_strcat(buf, sizeof(buf), "\r\n");
+    SYS1_Print(buf);
+  }
+#endif
     /* pressed */
     case DBNC_EVENT_PRESSED:
 #if PL_CONFIG_NOF_KEYS >= 1

@@ -400,7 +400,7 @@ void SHELL_Init(void) {
 	(void)CLS1_SetStdio(&BT_stdio); /* use the Bluetooth stdio as default */
 #endif
 #if PL_CONFIG_HAS_RTOS
-	if (FRTOS1_xTaskCreate(ShellTask, "Shell", 500, NULL, tskIDLE_PRIORITY+1,
+	if (FRTOS1_xTaskCreate(ShellTask, "Shell",  900/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1,
 			NULL) != pdPASS) {
 		for (;;) {
 		} /* error */
