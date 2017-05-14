@@ -10,12 +10,13 @@
 #define SNAKE_H_
 
 /*! \todo Extend interface as needed */
+int direction;
 
 typedef enum {
-  GAME_STATUS_ERROR         =  0,     /* error */
-  GAME_STATUS_RUN           = (1<<0), /* Game is Running */
-  GAME_STATUS_PAUSE         = (1<<1), /* Pause Menu view */
-  GAME_STATUS_END           = (1<<2), /* Game ENd view*/
+	GAME_STATUS_ERROR = 0, /* error */
+	GAME_STATUS_RUN = (1 << 0), /* Game is Running */
+	GAME_STATUS_PAUSE = (1 << 1), /* Pause Menu view */
+	GAME_STATUS_END = (1 << 2), /* Game ENd view*/
 } Game_StatusFlag;
 
 Game_StatusFlag gameStatus;

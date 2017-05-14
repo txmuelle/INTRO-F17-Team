@@ -96,14 +96,16 @@ void APP_EventHandler(EVNT_Handle event) {
 		break;
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_RIGHT, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_RIGHT, &menu);
 		BtnMsg(1, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		if(appStatus == APP_STATUS_FLAGS_SNAKE){
-		direc(2);
-		moveSnake();}
+		if (appStatus == APP_STATUS_FLAGS_SNAKE) {
+			direction=2;
+			moveSnake();
+		}
 
 #if PL_CONFIG_HAS_BUZZER
 		(void)BUZ_PlayTune(BUZ_TUNE_BUTTON);
@@ -130,55 +132,65 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
 	case EVNT_SW2_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_LEFT, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_LEFT, &menu);
 		BtnMsg(2, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		if(appStatus == APP_STATUS_FLAGS_SNAKE){
-		direc(4);
-		moveSnake();}
+		if (appStatus == APP_STATUS_FLAGS_SNAKE) {
+			direction=4;
+			moveSnake();
+		}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=3
 	case EVNT_SW3_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_DOWN, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_DOWN, &menu);
 		BtnMsg(3, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		if(appStatus == APP_STATUS_FLAGS_SNAKE){
-		direc(3);
-		moveSnake();}
+		if (appStatus == APP_STATUS_FLAGS_SNAKE) {
+			//direc(3);
+			direction=3;
+			moveSnake();
+		}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=4
 	case EVNT_SW4_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_ENTER, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_ENTER, &menu);
 		BtnMsg(4, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		if(appStatus == APP_STATUS_FLAGS_SNAKE ){
-		direc(5);
+		if (appStatus == APP_STATUS_FLAGS_SNAKE) {
+			direction=5;
+			moveSnake();
 		}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=5
 	case EVNT_SW5_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_UP, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_UP, &menu);
 		BtnMsg(5, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
 		LED1_Off();
-		if(appStatus == APP_STATUS_FLAGS_SNAKE){
-		direc(1);
-		moveSnake();}
+		if (appStatus == APP_STATUS_FLAGS_SNAKE) {
+			direction=1;
+			moveSnake();
+		}
 		break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=6
 	case EVNT_SW6_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_INCREMENT, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_INCREMENT, &menu);
 		BtnMsg(6, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);
@@ -187,7 +199,8 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
 #if PL_CONFIG_NOF_KEYS>=7
 	case EVNT_SW7_PRESSED:
-		if(appStatus == APP_STATUS_FLAGS_MENU)LCDMenu_OnEvent(LCDMENU_EVENT_DECREMENT, &menu);
+		if (appStatus == APP_STATUS_FLAGS_MENU)
+			LCDMenu_OnEvent(LCDMENU_EVENT_DECREMENT, &menu);
 		BtnMsg(7, "pressed");
 		LED1_On();
 		WAIT1_Waitms(50);

@@ -21,6 +21,7 @@
 #include "WAIT1.h"
 #include "GDisp1.h"
 #include "FDisp1.h"
+#include "keys.h"
 #include "GFONT1.h"
 #include "Snake.h"
 #include "UTIL1.h"
@@ -255,35 +256,44 @@ void direc(int d) {
 }
 
 void moveSnake(void) {
-	/* LEFT */
-	/*! \todo handle events */
-	if ("left event" && !right && !down && !up) {
-		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
-			direc(LEFT);
-		}
-		return;
-	}
-	/* RIGHT */
-	if ("right event" && !left && !down && !up) {
-		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
-			direc(RIGHT);
-		}
-		return;
-	}
 	/* UP */
-	if ("up event" && !down && !left && !right) {
+	if ((direction == 0x1)) {
+		//if (!down && !left && !right) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(UP);
 		}
 		return;
+		//}
 	}
+
 	/* DOWN */
-	if ("down event" && !up && !right && !left) {
+	if ((direction == 0x3)) {
+		//if ("down event" && !up && !right && !left) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(DOWN);
 		}
 		return;
 	}
+
+	/* LEFT */
+	/*! \todo handle events */
+	if ((direction == 0x4)) {
+		//if ("left event" && !right && !down && !up) {
+		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
+			direc(LEFT);
+		}
+		return;
+	}
+
+	/* RIGHT */
+	if ((direction == 0x2)||(direction == 0x5)) {
+		//if ("right event" && !left && !down && !up) {
+		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
+			direc(RIGHT);
+		}
+		return;
+	}
+
 	/* START/PAUSE */
 	if ("start/pause event") {
 		//showPause();
@@ -380,7 +390,7 @@ void showPause(void) {
 	waitAnyButton();
 
 	gameStatus = GAME_STATUS_RUN;
-	push=FALSE;
+	push = FALSE;
 	snake();
 }
 
