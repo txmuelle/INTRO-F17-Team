@@ -257,8 +257,7 @@ void direc(int d) {
 
 void moveSnake(void) {
 	/* UP */
-	if ((direction == 0x1)) {
-		//if (!down && !left && !right) {
+	if ((direction == 0x1) && !down) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(UP);
 		}
@@ -267,8 +266,7 @@ void moveSnake(void) {
 	}
 
 	/* DOWN */
-	if ((direction == 0x3)) {
-		//if ("down event" && !up && !right && !left) {
+	if ((direction == 0x3) && !up) {
 		if ((ySnake > 0 || ySnake <= GDisp1_GetHeight() - ySnake)) {
 			direc(DOWN);
 		}
@@ -277,8 +275,7 @@ void moveSnake(void) {
 
 	/* LEFT */
 	/*! \todo handle events */
-	if ((direction == 0x4)) {
-		//if ("left event" && !right && !down && !up) {
+	if ((direction == 0x4) && !right) {
 		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
 			direc(LEFT);
 		}
@@ -286,8 +283,14 @@ void moveSnake(void) {
 	}
 
 	/* RIGHT */
-	if ((direction == 0x2)||(direction == 0x5)) {
-		//if ("right event" && !left && !down && !up) {
+	if (((direction == 0x2) || (direction == 0x5)) && !left) {
+		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
+			direc(RIGHT);
+		}
+		return;
+	}
+
+	if ((direction == 0x5)) {
 		if ((xSnake > 0 || xSnake <= GDisp1_GetWidth() - xSnake)) {
 			direc(RIGHT);
 		}
