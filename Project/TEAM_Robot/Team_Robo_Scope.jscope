@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<JScopeProject>
+    <FileVersion major="1" minor="1" />
+    <Project>
+        <Configuration>
+            <JLink>
+                <Options Connection="4" />
+            </JLink>
+            <ElfFile Name="C:\HSLU\Elektrotech\Intro\INTRO-F17-Team\Project\TEAM_Robot\Debug\TEAM_Robot.elf" />
+            <DataFile Name="" />
+            <RawFile Name="" />
+            <Scope>
+                <Options TimeResolutionUs="1000000" />
+            </Scope>
+        </Configuration>
+        <Windows>
+            <Graph Show="1" />
+            <Watch Show="1" />
+        </Windows>
+        <SelectedSymbols>
+            <Symbol>
+                <Options Name="TACHO_currLeftSpeed" Address="0x1FFF8378" Type="long" TypeID="12" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-500" YMaxSampled="700" YAvgSampled="408" Offset="4" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="500" MaxValue="1000" File="C:/HSLU/Elektrotech/Intro/INTRO-F17-Team/Project/TEAM_Common/Tacho.c" Scope="1" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="TACHO_currRightSpeed" Address="0x1FFF837C" Type="long" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-500" YMaxSampled="700" YAvgSampled="160" Offset="8" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="500" MaxValue="1000" File="C:/HSLU/Elektrotech/Intro/INTRO-F17-Team/Project/TEAM_Common/Tacho.c" Scope="1" DrawStyle="0" />
+            </Symbol>
+        </SelectedSymbols>
+    </Project>
+</JScopeProject>
