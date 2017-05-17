@@ -210,7 +210,7 @@ void MOT_Deinit(void) {
 
 void MOT_Init(void) {
 #if MOTOR_HAS_INVERT
-  motorL.inverted = TRUE;
+  motorL.inverted = FALSE;
   motorR.inverted = FALSE;
 #endif
   motorL.DirPutVal = DirLPutVal;

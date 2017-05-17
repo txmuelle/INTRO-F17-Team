@@ -27,7 +27,8 @@
 #endif
 
 /*! \todo adopt the values for your robot */
-#define TURN_STEPS_90         400
+#define TURN_STEPS_90         680
+#define TURN_STEPS_90_LEFT_DIFF 10
   /*!< number of steps for a 90 degree turn */
 #define TURN_STEPS_LINE       100
   /*!< number of steps stepping over the line */
@@ -123,19 +124,19 @@ static void StepsTurn(int32_t stepsL, int32_t stepsR, TURN_StopFct stopIt, int32
 void TURN_Turn(TURN_Kind kind, TURN_StopFct stopIt) {
   switch(kind) {
     case TURN_LEFT45:
-      StepsTurn(-TURN_Steps90/2, TURN_Steps90/2, stopIt, TURN_STEPS_90_TIMEOUT_MS/2);
+      StepsTurn(-(TURN_Steps90-TURN_STEPS_90_LEFT_DIFF)/2, (TURN_Steps90-TURN_STEPS_90_LEFT_DIFF)/2, stopIt, TURN_STEPS_90_TIMEOUT_MS/2);
       break;
     case TURN_RIGHT45:
       StepsTurn(TURN_Steps90/2, -TURN_Steps90/2, stopIt, TURN_STEPS_90_TIMEOUT_MS/2);
       break;
     case TURN_LEFT90:
-      StepsTurn(-TURN_Steps90, TURN_Steps90, stopIt, TURN_STEPS_90_TIMEOUT_MS);
+      StepsTurn(-(TURN_Steps90-TURN_STEPS_90_LEFT_DIFF), (TURN_Steps90-TURN_STEPS_90_LEFT_DIFF), stopIt, TURN_STEPS_90_TIMEOUT_MS);
       break;
     case TURN_RIGHT90:
       StepsTurn(TURN_Steps90, -TURN_Steps90, stopIt, TURN_STEPS_90_TIMEOUT_MS);
       break;
     case TURN_LEFT180:
-      StepsTurn(-(2*TURN_Steps90), 2*TURN_Steps90, stopIt, TURN_STEPS_90_TIMEOUT_MS*2);
+      StepsTurn(-(2*(TURN_Steps90-TURN_STEPS_90_LEFT_DIFF)), 2*(TURN_Steps90-TURN_STEPS_90_LEFT_DIFF), stopIt, TURN_STEPS_90_TIMEOUT_MS*2);
      break;
     case TURN_RIGHT180:
       StepsTurn(2*TURN_Steps90, -(2*TURN_Steps90), stopIt, TURN_STEPS_90_TIMEOUT_MS*2);

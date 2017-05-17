@@ -19,6 +19,7 @@
 #include "Tacho.h"
 #endif
 #include "TMOUT1.h"
+#include "PID.h"
 
 void TMR_OnInterrupt(void) {
 	/* this one gets called from an interrupt!!!! */
