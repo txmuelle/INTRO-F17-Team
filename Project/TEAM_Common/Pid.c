@@ -13,28 +13,40 @@
   #include "CLS1.h"
 #endif
 #include "Reflectance.h"
+#if PL_CONFIG_HAS_CONFIG_NVM
+  #include "NVM_Config.h"
+#endif
 
 /*! \todo Add your own additional configurations as needed */
-static PID_Config lineFwConfig;
-static PID_Config speedLeftConfig, speedRightConfig;
-static PID_Config posLeftConfig, posRightConfig;
 
-uint8_t PID_GetPIDConfig(PID_ConfigType config, PID_Config **confP) {
-  switch(config) {
+//static PID_Config lineFwConfig;                       }
+//static PID_Config speedLeftConfig, speedRightConfig;  } -->Not used
+//static PID_Config posLeftConfig, posRightConfig;      }
+
+typedef struct {
+  PID_Config lineFwConfig;
+  PID_Config speedLeftConfig, speedRightConfig;
+  PID_Config posLeftConfig, posRightConfig;
+} PIDConfig_t;
+
+static PIDConfig_t config;
+
+uint8_t PID_GetPIDConfig(PID_ConfigType type, PID_Config **confP) {
+  switch(type) {
     case PID_CONFIG_LINE_FW:
-      *confP = &lineFwConfig; break;
+      *confP = &config.lineFwConfig; break;
 #if PL_GO_DEADEND_BW
     case PID_CONFIG_LINE_BW:
-      *confP = &lineBwConfig; break;
+      *confP = &config.lineBwConfig; break;
 #endif
     case PID_CONFIG_POS_LEFT:
-      *confP = &posLeftConfig; break;
+    	*confP = &config.posLeftConfig; break;
     case PID_CONFIG_POS_RIGHT:
-      *confP = &posRightConfig; break;
+    	*confP = &config.posRightConfig; break;
     case PID_CONFIG_SPEED_LEFT:
-      *confP = &speedLeftConfig; break;
+    	*confP = &config.speedLeftConfig; break;
     case PID_CONFIG_SPEED_RIGHT:
-      *confP = &speedRightConfig; break;
+    	*confP = &config.speedRightConfig; break;
     default:
       *confP = NULL;
       return ERR_FAILED;
@@ -187,14 +199,14 @@ static void PID_LineCfg(uint16_t currLine, uint16_t setLine, PID_Config *config)
 }
 
 void PID_Line(uint16_t currLine, uint16_t setLine) {
-  PID_LineCfg(currLine, setLine, &lineFwConfig);
+	PID_LineCfg(currLine, setLine, &config.lineFwConfig);
 }
 
 void PID_Speed(int32_t currSpeed, int32_t setSpeed, bool isLeft) {
   if (isLeft) {
-    PID_SpeedCfg(currSpeed, setSpeed, isLeft, &speedLeftConfig);
+	  PID_SpeedCfg(currSpeed, setSpeed, isLeft, &config.speedLeftConfig);
   } else {
-    PID_SpeedCfg(currSpeed, setSpeed, isLeft, &speedRightConfig);
+	  PID_SpeedCfg(currSpeed, setSpeed, isLeft, &config.speedRightConfig);
   }
 }
 
@@ -243,9 +255,9 @@ static void PID_PosCfg(int32_t currPos, int32_t setPos, bool isLeft, PID_Config 
 
 void PID_Pos(int32_t currPos, int32_t setPos, bool isLeft) {
   if (isLeft) {
-    PID_PosCfg(currPos, setPos, isLeft, &posLeftConfig);
+	  PID_PosCfg(currPos, setPos, isLeft, &config.posLeftConfig);
   } else {
-    PID_PosCfg(currPos, setPos, isLeft, &posRightConfig);
+	  PID_PosCfg(currPos, setPos, isLeft, &config.posRightConfig);
   }
 }
 
@@ -259,6 +271,10 @@ static void PID_PrintHelp(const CLS1_StdIOType *io) {
   CLS1_SendHelpStr((unsigned char*)"  pos speed <value>", (unsigned char*)"Maximum speed % value\r\n", io->stdOut);
   CLS1_SendHelpStr((unsigned char*)"  fw (p|i|d|w) <value>", (unsigned char*)"Sets P, I, D or anti-Windup line value\r\n", io->stdOut);
   CLS1_SendHelpStr((unsigned char*)"  fw speed <value>", (unsigned char*)"Maximum speed % value\r\n", io->stdOut);
+#if PL_CONFIG_HAS_CONFIG_NVM
+  CLS1_SendHelpStr((unsigned char*)"  store", (unsigned char*)"Store PID configuration settings in FLASH\r\n", io->stdOut);
+  CLS1_SendHelpStr((unsigned char*)"  load", (unsigned char*)"Load PID configuration settings from FLASH\r\n", io->stdOut);
+#endif
 }
 
 static void PrintPIDstatus(PID_Config *config, const unsigned char *kindStr, const CLS1_StdIOType *io) {
@@ -308,11 +324,11 @@ static void PrintPIDstatus(PID_Config *config, const unsigned char *kindStr, con
 
 static void PID_PrintStatus(const CLS1_StdIOType *io) {
   CLS1_SendStatusStr((unsigned char*)"pid", (unsigned char*)"\r\n", io->stdOut);
-  PrintPIDstatus(&lineFwConfig, (unsigned char*)"fw", io);
-  PrintPIDstatus(&speedLeftConfig, (unsigned char*)"speed L", io);
-  PrintPIDstatus(&speedRightConfig, (unsigned char*)"speed R", io);
-  PrintPIDstatus(&posLeftConfig, (unsigned char*)"pos L", io);
-  PrintPIDstatus(&posRightConfig, (unsigned char*)"pos R", io);
+  PrintPIDstatus(&config.lineFwConfig, (unsigned char*) "fw", io);
+  PrintPIDstatus(&config.speedLeftConfig, (unsigned char*) "speed L", io);
+  PrintPIDstatus(&config.speedRightConfig, (unsigned char*) "speed R", io);
+  PrintPIDstatus(&config.posLeftConfig, (unsigned char*) "pos L", io);
+  PrintPIDstatus(&config.posRightConfig, (unsigned char*) "pos R", io);
 }
 
 static uint8_t ParsePidParameter(PID_Config *config, const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
@@ -370,6 +386,21 @@ static uint8_t ParsePidParameter(PID_Config *config, const unsigned char *cmd, b
   return res;
 }
 
+static uint8_t PID_LoadSettingsFromFlash(void) {
+  PIDConfig_t *ptr;
+
+  ptr = (PIDConfig_t*)NVMC_GetPIDData();
+  if (ptr==NULL) {
+    return ERR_FAILED;
+  }
+  config = *ptr; /* copy data from FLASH to RAM */
+  return ERR_OK;
+}
+
+static uint8_t PID_StoreSettingsToFlash(void) {
+  return NVMC_SavePIDData(&config, sizeof(config));
+}
+
 uint8_t PID_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
   uint8_t res = ERR_OK;
 
@@ -380,33 +411,47 @@ uint8_t PID_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_Std
     PID_PrintStatus(io);
     *handled = TRUE;
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid speed L ", sizeof("pid speed L ")-1)==0) {
-    res = ParsePidParameter(&speedLeftConfig, cmd+sizeof("pid speed L ")-1, handled, io);
+    res = ParsePidParameter(&config.speedLeftConfig, cmd+sizeof("pid speed L ")-1, handled, io);
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid speed R ", sizeof("pid speed R ")-1)==0) {
-    res = ParsePidParameter(&speedRightConfig, cmd+sizeof("pid speed R ")-1, handled, io);
+    res = ParsePidParameter(&config.speedRightConfig, cmd+sizeof("pid speed R ")-1, handled, io);
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid pos L ", sizeof("pid pos L ")-1)==0) {
-    res = ParsePidParameter(&posLeftConfig, cmd+sizeof("pid pos L ")-1, handled, io);
+    res = ParsePidParameter(&config.posLeftConfig, cmd+sizeof("pid pos L ")-1, handled, io);
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid pos R ", sizeof("pid pos R ")-1)==0) {
-    res = ParsePidParameter(&posRightConfig, cmd+sizeof("pid pos R ")-1, handled, io);
+    res = ParsePidParameter(&config.posRightConfig, cmd+sizeof("pid pos R ")-1, handled, io);
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid fw ", sizeof("pid fw ")-1)==0) {
-    res = ParsePidParameter(&lineFwConfig, cmd+sizeof("pid fw ")-1, handled, io);
+	res = ParsePidParameter(&config.lineFwConfig, cmd+sizeof("pid fw ")-1, handled, io);
+	#if PL_CONFIG_HAS_CONFIG_NVM
+	  } else if (UTIL1_strcmp((char*)cmd, (char*)"pid store")==0) {
+		  *handled = TRUE;
+	    res = PID_StoreSettingsToFlash();
+	    if (res!=ERR_OK) {
+	      CLS1_SendStr((unsigned char*)"Storing to FLASH failed!\r\n", io->stdErr);
+	    }
+	  } else if (UTIL1_strcmp((char*)cmd, (char*)"pid load")==0) {
+		  *handled = TRUE;
+	    res = PID_LoadSettingsFromFlash();
+	    if (res!=ERR_OK) {
+	      CLS1_SendStr((unsigned char*)"Loading from FLASH failed!\r\n", io->stdErr);
+	    }
   }
+#endif
   return res;
 }
 #endif /* PL_HAS_SHELL */
 
 void PID_Start(void) {
   /* reset the 'memory' values of the structure back to zero */
-  lineFwConfig.lastError = 0;
-  lineFwConfig.integral = 0;
+	  config.lineFwConfig.lastError = 0;
+	  config.lineFwConfig.integral = 0;
 
-  speedLeftConfig.lastError = 0;
-  speedLeftConfig.integral = 0;
-  speedRightConfig.lastError = 0;
-  speedRightConfig.integral = 0;
-  posLeftConfig.lastError = 0;
-  posLeftConfig.integral = 0;
-  posRightConfig.lastError = 0;
-  posRightConfig.integral = 0;
+	  config.speedLeftConfig.lastError = 0;
+	  config.speedLeftConfig.integral = 0;
+	  config.speedRightConfig.lastError = 0;
+	  config.speedRightConfig.integral = 0;
+	  config.posLeftConfig.lastError = 0;
+	  config.posLeftConfig.integral = 0;
+	  config.posRightConfig.lastError = 0;
+	  config.posRightConfig.integral = 0;
 }
 
 void PID_Deinit(void) {
@@ -415,42 +460,42 @@ void PID_Deinit(void) {
 
 void PID_Init(void) {
   /*! \todo determine your PID values */
-  speedLeftConfig.pFactor100 = 1000;
-  speedLeftConfig.iFactor100 = 80;
-  speedLeftConfig.dFactor100 = 20;
-  speedLeftConfig.iAntiWindup = 120000;
-  speedLeftConfig.lastError = 0;
-  speedLeftConfig.integral = 0;
+  config.speedLeftConfig.pFactor100 = 2000;
+  config.speedLeftConfig.iFactor100 = 80;
+  config.speedLeftConfig.dFactor100 = 50;
+  config.speedLeftConfig.iAntiWindup = 120000;
+  config.speedLeftConfig.lastError = 0;
+  config.speedLeftConfig.integral = 0;
 
-  speedRightConfig.pFactor100 = 2000;
-  speedRightConfig.iFactor100 = 80;
-  speedRightConfig.dFactor100 = 0;
-  speedRightConfig.iAntiWindup = 120000;
-  speedRightConfig.lastError = 0;
-  speedRightConfig.integral = 0;
+  config.speedRightConfig.pFactor100 = config.speedLeftConfig.pFactor100;
+  config.speedRightConfig.iFactor100 = config.speedLeftConfig.iFactor100;
+  config.speedRightConfig.dFactor100 = config.speedLeftConfig.dFactor100;
+  config.speedRightConfig.iAntiWindup = config.speedLeftConfig.iAntiWindup;
+  config.speedRightConfig.lastError = 0;
+  config.speedRightConfig.integral = 0;
 
-  lineFwConfig.pFactor100 = 0;
-  lineFwConfig.iFactor100 = 0;
-  lineFwConfig.dFactor100 = 0;
-  lineFwConfig.iAntiWindup = 0;
-  lineFwConfig.maxSpeedPercent = 0;
-  lineFwConfig.lastError = 0;
-  lineFwConfig.integral = 0;
+  config.lineFwConfig.pFactor100 = 0;
+  config.lineFwConfig.iFactor100 = 0;
+  config.lineFwConfig.dFactor100 = 0;
+  config.lineFwConfig.iAntiWindup = 0;
+  config.lineFwConfig.maxSpeedPercent = 0;
+  config.lineFwConfig.lastError = 0;
+  config.lineFwConfig.integral = 0;
 
-  posLeftConfig.pFactor100 = 1000;
-  posLeftConfig.iFactor100 = 2;
-  posLeftConfig.dFactor100 = 50;
-  posLeftConfig.iAntiWindup = 200;
-  posLeftConfig.maxSpeedPercent = 40;
-  posLeftConfig.lastError = 0;
-  posLeftConfig.integral = 0;
-  posRightConfig.pFactor100 = posLeftConfig.pFactor100;
-  posRightConfig.iFactor100 = posLeftConfig.iFactor100;
-  posRightConfig.dFactor100 = posLeftConfig.dFactor100;
-  posRightConfig.iAntiWindup = posLeftConfig.iAntiWindup;
-  posRightConfig.lastError = posLeftConfig.lastError;
-  posRightConfig.integral = posLeftConfig.integral;
-  posRightConfig.maxSpeedPercent = posLeftConfig.maxSpeedPercent;
+  config.posLeftConfig.pFactor100 = 1000;
+  config.posLeftConfig.iFactor100 = 2;
+  config.posLeftConfig.dFactor100 = 50;
+  config.posLeftConfig.iAntiWindup = 200;
+  config.posLeftConfig.maxSpeedPercent = 40;
+  config.posLeftConfig.lastError = 0;
+  config.posLeftConfig.integral = 0;
+  config.posRightConfig.pFactor100 = config.posLeftConfig.pFactor100;
+  config.posRightConfig.iFactor100 = config.posLeftConfig.iFactor100;
+  config.posRightConfig.dFactor100 = config.posLeftConfig.dFactor100;
+  config.posRightConfig.iAntiWindup = config.posLeftConfig.iAntiWindup;
+  config.posRightConfig.lastError = config.posLeftConfig.lastError;
+  config.posRightConfig.integral = config.posLeftConfig.integral;
+  config.posRightConfig.maxSpeedPercent = config.posLeftConfig.maxSpeedPercent;
 }
 
 #endif /* PL_CONFIG_HAS_PID */

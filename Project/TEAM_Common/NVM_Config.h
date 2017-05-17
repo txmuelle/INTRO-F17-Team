@@ -38,6 +38,11 @@
 #define NVMC_REFLECTANCE_DATA_SIZE        (6*2*2) /* maximum of 6 sensors (min and max) values with 16 bits */
 #define NVMC_REFLECTANCE_END_ADDR         (NVMC_REFLECTANCE_DATA_START_ADDR+NVMC_REFLECTANCE_DATA_SIZE)
 
+#define NVMC_PID_SETTINGS_DATA_START_ADDR  (NVMC_REFLECTANCE_END_ADDR)
+#define NVMC_PID_SETTINGS_DATA_SIZE        (5*7*4) /* 5 PID configs with 7 32bit values each */
+#define NVMC_PID_SETTINGS_END_ADDR         (NVMC_REFLECTANCE_END_ADDR+NVMC_PID_SETTINGS_DATA_SIZE)
+
+
 /*!
  * \brief Saves the reflectance calibration data
  * \param data Pointer to the data
@@ -51,6 +56,21 @@ uint8_t NVMC_SaveReflectanceData(void *data, uint16_t dataSize);
  * \return Pointer to data, or NULL for failure
  */
 void *NVMC_GetReflectanceData(void);
+
+/*!
+ * \brief Saves the PID settings
+ * \param data Pointer to the data
+ * \param dataSize Size of data in bytes
+ * \return Error code, ERR_OK if everything is fine
+ */
+uint8_t NVMC_SavePIDData(void *data, uint16_t dataSize);
+
+/*!
+ * \brief Returns the PID settings data
+ * \return Pointer to data, or NULL for failure
+ */
+void *NVMC_GetPIDData(void);
+
 
 /*! \brief Driver initialization  */
 void NVMC_Init(void);

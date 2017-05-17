@@ -37,6 +37,22 @@ void *NVMC_GetReflectanceData(void) {
   return (void*)NVMC_REFLECTANCE_DATA_START_ADDR;
 }
 
+uint8_t NVMC_SavePIDData(void *data, uint16_t dataSize) {
+  if (dataSize>NVMC_PID_SETTINGS_DATA_SIZE) {
+    return ERR_OVERFLOW;
+  }
+  return IFsh1_SetBlockFlash(data, (IFsh1_TAddress)(NVMC_PID_SETTINGS_DATA_START_ADDR), dataSize);
+}
+
+void *NVMC_GetPIDData(void) {
+  if (isErased((uint8_t*)NVMC_PID_SETTINGS_DATA_START_ADDR, NVMC_PID_SETTINGS_DATA_SIZE)) {
+    return NULL;
+  }
+  return (void*)NVMC_PID_SETTINGS_DATA_START_ADDR;
+}
+
+
+
 void NVMC_Init(void) {
   /* nothing needed */
 }
