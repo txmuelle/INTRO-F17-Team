@@ -13,8 +13,8 @@
 
 #if PL_CONFIG_HAS_RTOS
 
-/*! \brief Main Task */
-static void RTOS_mainTask(void *pvParameters);
+static bool RTOS_ButtonPressed = FALSE;
+void RTOS_ButtonEvent(void);
 
 /*! \brief just blinking LEDs */
 static void RTOS_BlinkyTask(void *pvParameters);
@@ -27,8 +27,12 @@ void RTOS_Deinit(void);
 
 void RTOS_Run(void);
 
+/*! \brief App Task */
 static void AppTask(void* param);
+
+/*! \brief Not used KillMe Task */
 void KillMe(void* param);
+
 #endif /* PL_CONFIG_HAS_RTOS */
 
 #endif /* RTOS_H_ */

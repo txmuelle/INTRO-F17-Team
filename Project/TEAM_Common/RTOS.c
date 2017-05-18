@@ -13,26 +13,31 @@
 #include "LED.h"
 #include "Keys.h"
 #include "KeyDebounce.h"
+#if PL_CONFIG_HAS_MOTOR_TACHO
+  #include "Tacho.h"
+#endif
+#if PL_CONFIG_HAS_MOTOR
+  #include "Motor.h"
+#endif
+#if PL_CONFIG_HAS_REFLECTANCE
+  #include "Reflectance.h"
+#endif
 
-static void RTOS_BlinkyTask(void *pvParameters) {
-	for (;;) {
-		LEDPin1_NegVal();
-		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
-	}
+
+
+
+
+void RTOS_ButtonEvent(void) {
+  RTOS_ButtonPressed = TRUE;
 }
 
-static void RTOS_mainTask(void *pvParameters) {
-	for (;;) {
-		/*Event handler*/
-		EVNT_HandleEvent(APP_EventHandler, TRUE);
-		/*Key scanning*/
-		//KEY_Scan();
-		KEYDBNC_Process();
+//static void RTOS_BlinkyTask(void *pvParameters) {
+//	for (;;) {
+//		LEDPin1_NegVal();
+//		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
+//	}
+//}
 
-		/*write your Code here*/
-		WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
-	}
-}
 
 #if 0
 static void KillMe(void* param) {
@@ -43,13 +48,18 @@ static void KillMe(void* param) {
 
 static void AppTask(void* param) {
 	const int *whichLED = (int*) param;
+	bool start = FALSE;
 
+	RTOS_ButtonPressed = FALSE;
 	for (;;) {
 		if (*whichLED == 1) {
 			LED1_Neg();
 		} else if (*whichLED == 2) {
 			LED2_Neg();
 		}
+#if PL_CONFIG_HAS_MOTOR_TACHO
+    TACHO_CalcSpeed();
+#endif
 #if PL_CONFIG_HAS_KEYS
 		//KEY_Scan();
 		KEYDBNC_Process();
@@ -57,6 +67,7 @@ static void AppTask(void* param) {
 #if PL_CONFIG_HAS_EVENTS
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
 #endif
+
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
