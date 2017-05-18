@@ -239,6 +239,8 @@ void FRTOS1_vApplicationIdleHook(void)
   /* Write your code here ... */
 }
 
+
+
 /*
 ** ===================================================================
 **     Event       :  FRTOS1_vApplicationMallocFailedHook (module Events)
@@ -284,6 +286,58 @@ void PTRC1_OnTraceWrap(void)
   /* GDB: dump binary memory <file> <hexStartAddr> <hexEndAddr> */
   PTRC1_vGetGDBDumpCommand(buf, sizeof(buf), "c:\\tmp\\trc.dump");
 #endif
+}
+
+/*
+** ===================================================================
+**     Event       :  RF1_OnActivate (module Events)
+**
+**     Component   :  RF1 [nRF24L01]
+**     Description :
+**         Event called before accessing the bus.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RF1_OnActivate(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  RF1_OnDeactivate (module Events)
+**
+**     Component   :  RF1 [nRF24L01]
+**     Description :
+**         Event called before releasing the bus.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RF1_OnDeactivate(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  RNET1_OnRadioEvent (module Events)
+**
+**     Component   :  RNET1 [RNet]
+**     Description :
+**         Event created for various radio states, like timeout, ack
+**         received, data sent, ...
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         event           -
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RNET1_OnRadioEvent(RNET1_RadioEvent event)
+{
+  /* Write your code here ... */
+
 }
 
 /* END Events */

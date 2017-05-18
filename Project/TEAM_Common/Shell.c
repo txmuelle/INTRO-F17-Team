@@ -96,6 +96,11 @@
  * ******************************************************************/
 #include "AS1.h"
 
+#if RNET_CONFIG_REMOTE_STDIO
+	static unsigned char radio_cmd_buf[48];
+
+#endif
+
 static bool UART_KeyPressed(void) {
 	return AS1_GetCharsInRxBuf() != 0;
 }
@@ -284,6 +289,7 @@ static const CLS1_ParseCommandCallback CmdParserTable[] =
 
 static uint32_t SHELL_val; /* used as demo value for shell */
 
+
 void SHELL_SendString(unsigned char *msg) {
 #if PL_CONFIG_HAS_SHELL_QUEUE
 	SQUEUE_SendString(msg);
@@ -354,6 +360,7 @@ static void ShellTask(void *pvParameters) {
 	int i;
 	/* \todo Extend as needed */
 
+
 	(void) pvParameters; /* not used */
 	/* initialize buffers */
 	for (i = 0; i < sizeof(ios) / sizeof(ios[0]); i++) {
@@ -367,6 +374,15 @@ static void ShellTask(void *pvParameters) {
 		for (i = 0; i < sizeof(ios) / sizeof(ios[0]); i++) {
 			(void) CLS1_ReadAndParseWithCommandTable(ios[i].buf, ios[i].bufSize,
 					ios[i].stdio, CmdParserTable);
+
+#if RNET_CONFIG_REMOTE_STDIO
+			/* dispatch incoming messages
+			 and send them to local standard I/O */
+			CLS1_ConstStdIOType *ioRemote = RSTDIO_GetStdio();
+			RSTDIO_Print(RSTDIO_GetStdio());
+			(void) CLS1_ReadAndParseWithCommandTable(radio_cmd_buf,
+					sizeof(radio_cmd_buf), ioRemote, CmdParserTable);
+#endif
 		}
 #if PL_CONFIG_HAS_SHELL_QUEUE && PL_CONFIG_SQUEUE_SINGLE_CHAR
 		{
@@ -399,6 +415,12 @@ void SHELL_Init(void) {
 #if !CLS1_DEFAULT_SERIAL && PL_CONFIG_CONFIG_HAS_BLUETOOTH
 	(void)CLS1_SetStdio(&BT_stdio); /* use the Bluetooth stdio as default */
 #endif
+
+#if RNET_CONFIG_REMOTE_STDIO
+	radio_cmd_buf[0] = '\0';
+	RNETA_Init();
+#endif
+
 #if PL_CONFIG_HAS_RTOS
 	if (FRTOS1_xTaskCreate(ShellTask, "Shell",  900/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1,
 			NULL) != pdPASS) {
