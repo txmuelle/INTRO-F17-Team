@@ -126,12 +126,6 @@ static CLS1_ConstStdIOType UART_stdio = {
 #endif
 /********************************************************************/
 
-typedef struct {
-	CLS1_ConstStdIOType *stdio;
-	unsigned char *buf;
-	size_t bufSize;
-} SHELL_IODesc;
-
 static void SHELL_SendChar(uint8_t ch) {
 #if SHELL_CONFIG_HAS_SHELL_RTT
 	CLS1_SendCharFct(ch, RTT1_SendChar); /* blocking version with timeout */
@@ -199,6 +193,12 @@ static uint8_t SHELL_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* defa
 CLS1_ConstStdIOType *SHELL_GetStdio(void) {
 	return &SHELL_stdio;
 }
+
+typedef struct {
+	CLS1_ConstStdIOType *stdio;
+	unsigned char *buf;
+	size_t bufSize;
+} SHELL_IODesc;
 
 static const SHELL_IODesc ios[] =
 		{ { &SHELL_stdio, SHELL_DefaultShellBuffer,
@@ -293,7 +293,7 @@ static uint32_t SHELL_val; /* used as demo value for shell */
 void SHELL_SendString(unsigned char *msg) {
 #if PL_CONFIG_HAS_SHELL_QUEUE
 	SQUEUE_SendString(msg);
-#else CLS1_DEFAULT_SERIAL
+#else //CLS1_DEFAULT_SERIAL
 	CLS1_SendStr(msg, CLS1_GetStdio()->stdOut);
 #endif
 }
@@ -305,8 +305,7 @@ void SHELL_SendString(unsigned char *msg) {
  */
 static uint8_t SHELL_PrintHelp(const CLS1_StdIOType *io) {
 	CLS1_SendHelpStr("Shell", "Shell commands\r\n", io->stdOut);
-	CLS1_SendHelpStr("  help|status", "Print help or status information\r\n",
-			io->stdOut);
+	CLS1_SendHelpStr("  help|status", "Print help or status information\r\n", io->stdOut);
 	CLS1_SendHelpStr("  val <num>", "Assign number value\r\n", io->stdOut);
 	return ERR_OK;
 }
@@ -359,7 +358,6 @@ void SHELL_ParseCmd(uint8_t *cmd) {
 static void ShellTask(void *pvParameters) {
 	int i;
 	/* \todo Extend as needed */
-
 
 	(void) pvParameters; /* not used */
 	/* initialize buffers */

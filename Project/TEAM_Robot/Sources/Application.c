@@ -72,7 +72,7 @@ void APP_EventHandler(EVNT_Handle event) {
 
   /*only turn on for debug purpose*/
   case EVNT_LED_HEARTBEAT:{
-	  TRG_AddTick();
+
      // LED1_On();
      // WAIT1_Waitms(500);
 	 // LED1_Off();

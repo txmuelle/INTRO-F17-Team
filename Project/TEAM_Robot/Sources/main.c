@@ -89,6 +89,8 @@
 #include "BitIoLdd22.h"
 #include "CSN1.h"
 #include "BitIoLdd23.h"
+#include "IRQ1.h"
+#include "ExtIntLdd2.h"
 #include "SM1.h"
 #include "SMasterLdd2.h"
 #include "TMOUT1.h"
