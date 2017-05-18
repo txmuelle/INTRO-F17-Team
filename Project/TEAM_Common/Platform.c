@@ -78,6 +78,9 @@
 #if PL_CONFIG_HAS_BATTERY_ADC
   #include "Battery.h"
 #endif
+#if PL_CONFIG_HAS_SUMO /*! \todo */
+  #include "Sumo.h"
+#endif
 
 void PL_Init(void) {
 #if PL_CONFIG_HAS_LEDS
@@ -152,6 +155,9 @@ void PL_Init(void) {
 #if PL_CONFIG_HAS_BATTERY_ADC
   BATT_Init();
 #endif
+#if PL_CONFIG_HAS_SUMO /*! \todo */
+  SUMO_Init();
+#endif
 }
 
 void PL_Deinit(void) {
@@ -223,5 +229,8 @@ void PL_Deinit(void) {
 #endif
 #if PL_CONFIG_HAS_LEDS
   LED_Deinit();
+#endif
+#if PL_CONFIG_HAS_SUMO /*! \todo */
+  SUMO_Deinit();
 #endif
 }
