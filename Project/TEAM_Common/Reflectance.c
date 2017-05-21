@@ -19,6 +19,7 @@
 #include "IR5.h"
 #include "IR6.h"
 #include "UTIL1.h"
+#include "Turn.h"
 #include "FRTOS1.h"
 #include "Application.h"
 #include "Event.h"
@@ -115,6 +116,8 @@ static const SensorFctType SensorFctArray[REF_NOF_SENSORS] = {
   {S5_SetOutput, S5_SetInput, S5_SetVal, S5_GetVal},
   {S6_SetOutput, S6_SetInput, S6_SetVal, S6_GetVal},
 };
+int HAS_WHITE_L = 0; //0 == NO_WHITE, 1 == HAS_WHITE
+
 
 #if 1 || PL_CONFIG_HAS_LINE_MAZE
 void REF_GetSensorValues(uint16_t *values, int nofValues) {
@@ -225,9 +228,9 @@ static void ReadCalibrated(SensorTimeType calib[REF_NOF_SENSORS], SensorTimeType
       x = (((int32_t)raw[i]-SensorCalibMinMax.minVal[i])*1000)/denominator;
     }
     if (x<0) {
-      x = 0;
+      x = 0; //white
     } else if (x>1000) {
-      x = 1000;
+      x = 1000; //black
     }
     calib[i] = x;
   }
@@ -297,7 +300,11 @@ static REF_LineKind ReadLineKind(SensorTimeType val[REF_NOF_SENSORS]) {
 
   for(i=0;i<REF_NOF_SENSORS;i++) {
     if (val[i]<REF_MIN_LINE_VAL) { /* smaller value? White seen! */
+    	HAS_WHITE_L = 1;
+      TURN_TurnAngle(90, NULL);
+      TURN_TurnAngle(0, NULL);
       break;
+      //drive
     }
   }
   if (i==REF_NOF_SENSORS) { /* all sensors see 'black' */

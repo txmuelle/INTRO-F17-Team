@@ -67,6 +67,10 @@ static void AppTask(void* param) {
 #if PL_CONFIG_HAS_EVENTS
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
 #endif
+#if PL_CONFIG_HAS_LINE_MAZE
+
+#endif
+
 
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
