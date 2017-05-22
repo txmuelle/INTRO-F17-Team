@@ -64,7 +64,7 @@ void APP_EventHandler(EVNT_Handle event) {
 	  for(i=0; i < 3; i++){
 
 	        LED2_Neg();        //blinking the LED on Startup
-	        WAIT1_Waitms(100);
+	        WAIT1_WaitOSms(100);
 	  }/*for*/
 	  LED2_Off();
   }
@@ -74,7 +74,7 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_LED_HEARTBEAT:{
 
      // LED1_On();
-     // WAIT1_Waitms(500);
+     // WAIT1_WaitOSms(500);
 	 // LED1_Off();
   }
   break;
@@ -91,7 +91,7 @@ void APP_EventHandler(EVNT_Handle event) {
 	    CLS1_printf("You pushed the button short %d times \r\n",cntr ,SHELL_GetStdio()->stdOut);
 		/*blink LED1*/
 // 		LED1_On();
-// 		WAIT1_Waitms(500);
+// 		WAIT1_WaitOSms(500);
 // 		LED1_Off();
   }
   break;
@@ -210,7 +210,7 @@ void APP_Start(void) {
 	  KEY_Scan();
 
 	  /*write your Code here*/
-	  WAIT1_Waitms(100); /* just wait for some arbitrary time .... */
+	  WAIT1_WaitOSms(100); /* just wait for some arbitrary time .... */
 
 
 

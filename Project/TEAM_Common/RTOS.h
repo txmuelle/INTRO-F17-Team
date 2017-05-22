@@ -16,8 +16,8 @@
 static bool RTOS_ButtonPressed = FALSE;
 void RTOS_ButtonEvent(void);
 
-/*! \brief just blinking LEDs */
-static void RTOS_BlinkyTask(void *pvParameters);
+///*! \brief just blinking LEDs */
+//static void RTOS_BlinkyTask(void *pvParameters);
 
 /*! \brief Initializes the RTOS module */
 void RTOS_Init(void);
