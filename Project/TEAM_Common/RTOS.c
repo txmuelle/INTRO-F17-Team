@@ -85,7 +85,7 @@ void RTOS_Init(void) {
 	EVNT_SetEvent(EVNT_STARTUP); /* set startup event */
 	/*! \todo Create tasks here */
 	if (xTaskCreate(AppTask, (signed portCHAR *) "App",
-			500 / sizeof(StackType_t), (void*) &led1, tskIDLE_PRIORITY + 1,
+			900 / sizeof(StackType_t), (void*) &led1, tskIDLE_PRIORITY + 2,
 			NULL) != pdPASS) {
 		for (;;) {
 		} /* error case only, stay here! */

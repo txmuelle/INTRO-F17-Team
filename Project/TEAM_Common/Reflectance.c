@@ -749,7 +749,7 @@ void REF_Init(void) {
 	timerHandle = RefCnt_Init(NULL);
 	/*! \todo You might need to adjust priority or other task settings */
 	if (FRTOS1_xTaskCreate(ReflTask, "Refl", 600 / sizeof(StackType_t), NULL,
-			tskIDLE_PRIORITY, NULL) != pdPASS) {
+			tskIDLE_PRIORITY+4, NULL) != pdPASS) {
 		for (;;) {
 		} /* error */
 	}
