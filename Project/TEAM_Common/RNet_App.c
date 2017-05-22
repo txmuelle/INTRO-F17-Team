@@ -77,7 +77,7 @@ static uint8_t HandleDataRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *da
   (void)size;
   (void)packet;
   switch(type) {
-#if 1
+#if 0
     case RAPP_MSG_TYPE_LAP_POINT:
       if (size==2) {
         *handled = TRUE;

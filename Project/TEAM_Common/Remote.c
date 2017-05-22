@@ -48,6 +48,8 @@
 #if PL_CONFIG_HAS_LINE_FOLLOW
   #include "LineFollow.h"
 #endif
+#include "Sumo.h"
+#include "Distance.h"
 
 static bool REMOTE_isOn = FALSE;
 static bool REMOTE_isVerbose = FALSE;
@@ -299,7 +301,22 @@ uint8_t REMOTE_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *
     case RAPP_MSG_TYPE_REQUEST_SET_VALUE:
       id = UTIL1_GetValue16LE(data); /* extract 16bit ID (little endian) */
       /*!\ todo handle message*/
-      *handled = FALSE;
+		if (id == RAPP_MSG_TYPE_DATA_ID_STOP) {
+			*handled = FALSE;
+			beep = TRUE;
+			SUMO_StopSumo();
+		}
+		if (id == RAPP_MSG_TYPE_DATA_ID_START) {
+			*handled = FALSE;
+			beep = TRUE;
+			SUMO_StartSumo();
+		}
+		if (id == RAPP_MSG_TYPE_DATA_ID_START1) {
+			*handled = FALSE;
+			beep = TRUE;
+			SUMO_StartSumo1();
+		}
+
       break;
 
     case RAPP_MSG_TYPE_QUERY_VALUE:
@@ -315,11 +332,43 @@ uint8_t REMOTE_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *
         *handled = TRUE;
         beep =  TRUE;
   #endif
+      } else if (id==RAPP_MSG_TYPE_DATA_ID_START_STOP) {
+         uint32_t val;
+
+ #if PL_CONFIG_HAS_SUMO
+         val = SUMO_IsRunningSumo()?1:0;
+ #else
+         val = 0; /* don't know? */
+ #endif
+         RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE_RESPONSE, id,  val, srcAddr, RPHY_PACKET_FLAGS_NONE);
+         *handled = TRUE;
+         beep =  TRUE;
+       } else if (id==RAPP_MSG_TYPE_DATA_ID_TOF_VALUES) {
+         union {
+           uint8_t mm[4];
+           uint32_t val;
+         } dist;
+ #if PL_HAS_DISTANCE_SENSOR
+         dist.mm[0] = DIST_GetDistance(DIST_SENSOR_FRONT);
+         dist.mm[1] = DIST_GetDistance(DIST_SENSOR_LEFT);
+         dist.mm[2] = DIST_GetDistance(DIST_SENSOR_REAR);
+         dist.mm[3] = DIST_GetDistance(DIST_SENSOR_RIGHT);
+ #else /* no sensor */
+         dist.mm[0] = 0xFF;
+         dist.mm[1] = 0xFF;
+         dist.mm[2] = 0xFF;
+         dist.mm[3] = 0xFF;
+ #endif
+         RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE_RESPONSE, id, dist.val, srcAddr, RPHY_PACKET_FLAGS_NONE);
+         *handled = TRUE;
+         beep =  TRUE;
       } else if (id==RAPP_MSG_TYPE_DATA_ID_PID_FW_SPEED) {
         /*!\ todo handle message*/
         *handled = FALSE;
       }
       break;
+    case RAPP_MSG_TYPE_QUERY_VALUE_RESPONSE:
+       break;
 
     case RAPP_MSG_TYPE_NOTIFY_VALUE:
       id = UTIL1_GetValue16LE(data); /* extract 16bit ID (little endian) */

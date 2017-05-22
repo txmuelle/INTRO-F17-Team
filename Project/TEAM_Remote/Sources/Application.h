@@ -18,6 +18,7 @@ typedef enum {
   APP_STATUS_FLAGS_ERROR           = 0,      /* error */
   APP_STATUS_FLAGS_MENU           = (1<<0), /* Menu view running */
   APP_STATUS_FLAGS_SNAKE          = (1<<1), /* snake running*/
+  APP_STATUS_FLAGS_SUMO			  = (1<<2), /* sumo running*/
 } APP_StatusFlag;
 
 APP_StatusFlag appStatus;
