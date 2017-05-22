@@ -19,6 +19,7 @@
 #include "Pid.h"
 #include "Motor.h"
 #include "Event.h"
+#include "Turn.h"
 #include "Keys.h"
 #include "KeyDebounce.h"
 #if PL_CONFIG_HAS_SHELL
@@ -36,14 +37,15 @@
 #endif
 
 typedef enum {
-	SUMO_STATE_SEARCH_ROBOT,
-	SUMO_STATE_SEARCH_BORDER,
 	SUMO_STATE_ATTACKE,
-	SUMO_STATE_DEFFENCE,
+	SUMO_STATE_SEARCH_OPONEND,
+	SUMO_STATE_SEARCH_BORDER,
 	SUMO_STATE_CALIBRATE,
 	SUMO_STATE_OFF,
 	SUMO_STATE_ERROR,
 } Sumo_State;
+
+
 
 /*!
  * \brief Returns the actual State of Sumo.
@@ -65,9 +67,14 @@ uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled,
 #endif/* PL_CONFIG_HAS_SHELL */
 
 /*! \brief Start / Stops the module */
-void SUMO_StartStopSumo(void);
+void SUMO_Start1Sumo(void);
 void SUMO_StartSumo(void);
 void SUMO_StopSumo(void);
+
+/* \brief is Sumo running?
+ * \return true if Sumo is runing
+ */
+bool SUMO_IsRunningSumo(void);
 
 /*! \brief Initialization of the module */
 void SUMO_Init(void);

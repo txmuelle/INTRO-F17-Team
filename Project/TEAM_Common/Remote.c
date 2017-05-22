@@ -314,7 +314,7 @@ uint8_t REMOTE_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *
 		if (id == RAPP_MSG_TYPE_DATA_ID_START1) {
 			*handled = FALSE;
 			beep = TRUE;
-			SUMO_StartSumo1();
+			SUMO_Start1Sumo();
 		}
 
       break;
@@ -332,7 +332,7 @@ uint8_t REMOTE_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *
         *handled = TRUE;
         beep =  TRUE;
   #endif
-      } else if (id==RAPP_MSG_TYPE_DATA_ID_START_STOP) {
+      } else if (id==RAPP_MSG_TYPE_DATA_ID_START|RAPP_MSG_TYPE_DATA_ID_START1|RAPP_MSG_TYPE_DATA_ID_STOP) {
          uint32_t val;
 
  #if PL_CONFIG_HAS_SUMO

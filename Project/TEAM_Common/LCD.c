@@ -8,6 +8,7 @@
 
 #include "Platform.h"
 #include "LCD.h"
+#if PL_CONFIG_HAS_LCD_MENU
 #include "PDC1.h"
 #include "GDisp1.h"
 #include "GFONT1.h"
@@ -18,6 +19,7 @@
 #include "Event.h"
 #include "FRTOS1.h"
 #include "Snake.h"
+
 #if PL_CONFIG_HAS_RADIO
   #include "RApp.h"
   #include "RNet_App.h"
@@ -30,7 +32,7 @@ static bool LedBackLightisOn = TRUE;
 static bool remoteModeIsOn = FALSE;
 static bool requestLCDUpdate = FALSE;
 
-#if PL_CONFIG_HAS_LCD_MENU
+
 typedef enum {
   LCD_MENU_ID_NONE = LCDMENU_ID_NONE, /* special value! */
   LCD_MENU_ID_MAIN,
@@ -355,7 +357,7 @@ uint8_t LCD_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *dat
 }
 #endif
 
-#endif /* PL_CONFIG_HAS_LCD_MENU */
+
 
 
 static void ShowTextOnLCD(unsigned char *text) {
@@ -460,7 +462,7 @@ static void LCD_Task(void *param) {
       requestLCDUpdate = FALSE;
       LCDMenu_OnEvent(LCDMENU_EVENT_DRAW, NULL);
     }
-
+#endif
  #if 1 /* \todo */
         {
           portBASE_TYPE res;

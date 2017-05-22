@@ -26,6 +26,7 @@ typedef struct {
 static xQueueHandle Sumo_Queue;
 
 Sumo_State SUMO_State;
+static uint8 SumoRunFlag = FALSE;
 int afterCalib = 0;
 #if PL_CONFIG_HAS_MOTOR
 static bool WhiteLineDetected(void) {
@@ -70,13 +71,47 @@ void Sumo_EventHandler(EVNT_Handle event) {
 }
 #endif /* PL_CONFIG_HAS_EVENTS */
 
-/*
- *
+
+/* \brief is Sumo running?
+ * \return true if Sumo is running
  */
-//line detectLine(){
-//
-//
-//}
+bool SUMO_IsRunningSumo(void) {
+	return SumoRunFlag;
+}
+
+
+/*! \brief Start Sumo with 2.Strategic */
+void SUMO_Start1Sumo(void) {
+	SumoRunFlag = TRUE;
+	/*ToDo*/
+
+}
+
+/*! \brief Start Sumo with 1.Strategic */
+void SUMO_StartSumo(void) {
+	if (!SumoRunFlag){
+		//Todo search Opponent here
+		SumoRunFlag = TRUE;
+		SUMO_State = SUMO_STATE_ATTACKE;
+	}
+		else{
+		/*ERROR: Sumo is already running*/
+	}
+
+}
+
+/*! \brief Stops Sumo */
+void SUMO_StopSumo(void) {
+
+#if PL_CONFIG_HAS_MOTOR
+	DRV_SetMode(DRV_MODE_SPEED);
+	DRV_SetSpeed(0, 0); //stop Motors
+#endif
+
+	SumoRunFlag = FALSE;
+	SUMO_State = SUMO_STATE_OFF;
+}
+
 static void SumoTask(void *pvParameters) {
 
 	portTickType xLastWakeTime;
@@ -92,50 +127,80 @@ static void SumoTask(void *pvParameters) {
 		EVNT_HandleEvent(Sumo_EventHandler, TRUE);
 #endif
 
-		if (SUMO_State == SUMO_STATE_SEARCH_ROBOT) {
-			/*! \todo  */
-		} else if (SUMO_State == SUMO_STATE_ATTACKE) {
+		switch (SUMO_State) {
+
+		case SUMO_STATE_ATTACKE: {
+
 
 			if (RTOS_ButtonPressed) {
 				RTOS_ButtonPressed = FALSE;
 #if PL_CONFIG_HAS_MOTOR
-				MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 10);
-				MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 10);
+			    DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(800, 800);
 #endif
 			}
 #if PL_CONFIG_HAS_MOTOR
 			if (WhiteLineDetected()) {
-				MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
-				MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
+				DRV_SetSpeed(0, 0);
+				TURN_TurnAngle(180,NULL);
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(800, 800);
 			}
 #endif
+		}
+			break;
+		case SUMO_STATE_SEARCH_OPONEND: {
+
 			/*! \todo  */
-		} else if (SUMO_State == SUMO_STATE_DEFFENCE) {
-			/*! \todo  */
-		} else if (SUMO_State == SUMO_STATE_CALIBRATE) {
+
+		}
+			break;
+
+		case SUMO_STATE_CALIBRATE: {
 
 			if (RTOS_ButtonPressed && !(afterCalib == 1)) {
 				setState(2);
 				REF_CalibrateStartStop();
 			}
 			if (afterCalib == 1) {
-				//SUMO_State = SUMO_STATE_SEARCH_BORDER;
 				setState(3);
 				REF_CalibrateStartStop();
-				SUMO_State = SUMO_STATE_SEARCH_BORDER;
+				SUMO_State = SUMO_STATE_ATTACKE;
 			}
 			/*! \todo  */
-		} else if (SUMO_State == SUMO_STATE_OFF) {
-			/* do nothing */
-		} else if (SUMO_State == SUMO_STATE_SEARCH_BORDER) {
+		}
+			break;
+
+		case SUMO_STATE_OFF: {
+
+#if PL_CONFIG_HAS_MOTOR
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
+			DRV_SetMode(DRV_MODE_SPEED);
+			DRV_SetSpeed(0,0);
+#endif
+			/* turn the Sumo off */
+		}
+			break;
+		case SUMO_STATE_SEARCH_BORDER: {
 			//search border
 			if (getHasWhiteBorder() && (afterCalib == 1)) {
 				DRV_SetMode(DRV_MODE_POS);
 				DRV_SetPos(-1000, -1000);
-				TURN_TurnAngle(90, NULL);
+				TURN_TurnAngle((int16_t)90, NULL);
 				//DRV_SetPos(-1000, -1000);
 				afterCalib = 0;
 			}
+		}
+			break;
+
+		default:
+
+#if PL_CONFIG_HAS_MOTOR
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 30);
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), -30);
+#endif
+
 		}
 		FRTOS1_vTaskDelayUntil(&xLastWakeTime, 5/portTICK_PERIOD_MS);
 	} /* for */
@@ -161,7 +226,7 @@ void SUMO_Init(void) {
 	 } /* error */
 
 	if (FRTOS1_xTaskCreate(SumoTask, "Sumo", configMINIMAL_STACK_SIZE+60, NULL,
-			tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+			tskIDLE_PRIORITY+3, NULL) != pdPASS) {
 		for (;;) {
 		} /* error */
 
