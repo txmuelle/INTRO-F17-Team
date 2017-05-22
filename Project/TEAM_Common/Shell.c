@@ -377,7 +377,7 @@ static void ShellTask(void *pvParameters) {
 			/* dispatch incoming messages
 			 and send them to local standard I/O */
 			CLS1_ConstStdIOType *ioRemote = RSTDIO_GetStdio();
-			RSTDIO_Print(RSTDIO_GetStdio());
+			RSTDIO_Print(SHELL_GetStdio());
 			(void) CLS1_ReadAndParseWithCommandTable(radio_cmd_buf,
 					sizeof(radio_cmd_buf), ioRemote, CmdParserTable);
 #endif
@@ -414,9 +414,9 @@ void SHELL_Init(void) {
 	(void)CLS1_SetStdio(&BT_stdio); /* use the Bluetooth stdio as default */
 #endif
 
-#if RNET_CONFIG_REMOTE_STDIO
+#if  RNET_CONFIG_REMOTE_STDIO
 	radio_cmd_buf[0] = '\0';
-	RNETA_Init();
+	//RNETA_Init();
 #endif
 
 #if PL_CONFIG_HAS_RTOS

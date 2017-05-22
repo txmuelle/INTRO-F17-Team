@@ -246,7 +246,7 @@ static void RadioTask(void *pvParameters) {
   configASSERT(portTICK_PERIOD_MS<=2); /* otherwise  vTaskDelay() below will not delay and starve lower prio tasks */
   for(;;) {
     Process(); /* process state machine and radio in/out queues */
-    FRTOS1_vTaskDelay(2/portTICK_PERIOD_MS); /* \todo This will only work properly if having a <= 2ms tick period */
+    FRTOS1_vTaskDelay(5/portTICK_PERIOD_MS); /* \todo This will only work properly if having a <= 2ms tick period */
   }
 }
 
