@@ -97,7 +97,7 @@
 #include "AS1.h"
 
 #if RNET_CONFIG_REMOTE_STDIO
-	static unsigned char radio_cmd_buf[48];
+static unsigned char radio_cmd_buf[48];
 
 #endif
 
@@ -115,12 +115,8 @@ static void UART_ReceiveChar(uint8_t *p) {
 	}
 }
 
-static CLS1_ConstStdIOType UART_stdio = {
-		.stdIn = UART_ReceiveChar,
-		.stdOut = UART_SendChar,
-		.stdErr = UART_SendChar,
-		.keyPressed = UART_KeyPressed,
-      };
+static CLS1_ConstStdIOType UART_stdio = { .stdIn = UART_ReceiveChar, .stdOut =
+		UART_SendChar, .stdErr = UART_SendChar, .keyPressed = UART_KeyPressed, };
 
 //static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 #endif
@@ -129,7 +125,7 @@ static CLS1_ConstStdIOType UART_stdio = {
 static void SHELL_SendChar(uint8_t ch) {
 #if SHELL_CONFIG_HAS_SHELL_RTT
 	CLS1_SendCharFct(ch, RTT1_SendChar); /* blocking version with timeout */
-	  //RTT1_SendChar(ch); /* this one is not blocking, will loose characters if sending too fast */
+	//RTT1_SendChar(ch); /* this one is not blocking, will loose characters if sending too fast */
 #endif
 #if SHELL_CONFIG_HAS_EXTRA_UART
 	UART_SendChar(ch);
@@ -180,12 +176,10 @@ static bool SHELL_KeyPressed(void) {
 	return FALSE;
 }
 
-CLS1_ConstStdIOType SHELL_stdio =
-{
-	(CLS1_StdIO_In_FctType) SHELL_ReadChar, /* stdin */
-	(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stdout */
-	(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stderr */
-	SHELL_KeyPressed /* if input is not empty */
+CLS1_ConstStdIOType SHELL_stdio = { (CLS1_StdIO_In_FctType) SHELL_ReadChar, /* stdin */
+(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stdout */
+(CLS1_StdIO_OutErr_FctType) SHELL_SendChar, /* stderr */
+SHELL_KeyPressed /* if input is not empty */
 };
 
 static uint8_t SHELL_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
@@ -214,10 +208,8 @@ static const SHELL_IODesc ios[] =
 static uint8_t SHELL_ParseCommand(const unsigned char *cmd, bool *handled,
 		const CLS1_StdIOType *io);
 
-static const CLS1_ParseCommandCallback CmdParserTable[] =
-{
-	CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
-    SHELL_ParseCommand, /* our own module parser */
+static const CLS1_ParseCommandCallback CmdParserTable[] = { CLS1_ParseCommand, /* Processor Expert Shell component, is first in list */
+SHELL_ParseCommand, /* our own module parser */
 #if FRTOS1_PARSE_COMMAND_ENABLED
 		FRTOS1_ParseCommand, /* FreeRTOS shell parser */
 #endif
@@ -239,8 +231,7 @@ static const CLS1_ParseCommandCallback CmdParserTable[] =
 		MCP4728_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_QUADRATURE
-		Q4CLeft_ParseCommand,
-		Q4CRight_ParseCommand,
+		Q4CLeft_ParseCommand, Q4CRight_ParseCommand,
 #endif
 #if PL_CONFIG_HAS_QUAD_CALIBRATION
 		QUADCALIB_ParseCommand,
@@ -289,7 +280,6 @@ static const CLS1_ParseCommandCallback CmdParserTable[] =
 
 static uint32_t SHELL_val; /* used as demo value for shell */
 
-
 void SHELL_SendString(unsigned char *msg) {
 #if PL_CONFIG_HAS_SHELL_QUEUE
 	SQUEUE_SendString(msg);
@@ -305,7 +295,8 @@ void SHELL_SendString(unsigned char *msg) {
  */
 static uint8_t SHELL_PrintHelp(const CLS1_StdIOType *io) {
 	CLS1_SendHelpStr("Shell", "Shell commands\r\n", io->stdOut);
-	CLS1_SendHelpStr("  help|status", "Print help or status information\r\n", io->stdOut);
+	CLS1_SendHelpStr("  help|status", "Print help or status information\r\n",
+			io->stdOut);
 	CLS1_SendHelpStr("  val <num>", "Assign number value\r\n", io->stdOut);
 	return ERR_OK;
 }
@@ -420,7 +411,7 @@ void SHELL_Init(void) {
 #endif
 
 #if PL_CONFIG_HAS_RTOS
-	if (FRTOS1_xTaskCreate(ShellTask, "Shell",  900/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1,
+	if (FRTOS1_xTaskCreate(ShellTask, "Shell", 900/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1,
 			NULL) != pdPASS) {
 		for (;;) {
 		} /* error */

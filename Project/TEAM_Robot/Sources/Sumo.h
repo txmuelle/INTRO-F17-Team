@@ -22,35 +22,34 @@
 #include "Keys.h"
 #include "KeyDebounce.h"
 #if PL_CONFIG_HAS_SHELL
-  #include "CLS1.h"
+#include "CLS1.h"
 #endif
 #include "Q4CLeft.h"
 #include "Q4CRight.h"
 #include "Shell.h"
 #include "WAIT1.h"
 #if PL_CONFIG_HAS_MOTOR
-  #include "Motor.h"
+#include "Motor.h"
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  #include "Reflectance.h"
+#include "Reflectance.h"
 #endif
 
 typedef enum {
-  SUMO_STATE_SEARCH,
-  SUMO_STATE_ATTACKE,
-  SUMO_STATE_DEFFENCE,
-  SUMO_STATE_CALIBRATE,
-  SUMO_STATE_OFF,
-  SUMO_STATE_ERROR,
+	SUMO_STATE_SEARCH_ROBOT,
+	SUMO_STATE_SEARCH_BORDER,
+	SUMO_STATE_ATTACKE,
+	SUMO_STATE_DEFFENCE,
+	SUMO_STATE_CALIBRATE,
+	SUMO_STATE_OFF,
+	SUMO_STATE_ERROR,
 } Sumo_State;
-
 
 /*!
  * \brief Returns the actual State of Sumo.
  * \return Actual State
  */
 int32_t SUMO_GetState(void);
-
 
 #if PL_CONFIG_HAS_SHELL
 #include "CLS1.h"
@@ -61,9 +60,9 @@ int32_t SUMO_GetState(void);
  * \param io I/O stream to be used for input/output
  * \return Error code, ERR_OK if everything was fine
  */
-uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io);
+uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled,
+		const CLS1_StdIOType *io);
 #endif/* PL_CONFIG_HAS_SHELL */
-
 
 /*! \brief Start / Stops the module */
 void SUMO_StartStopSumo(void);
@@ -75,7 +74,5 @@ void SUMO_Init(void);
 
 /*! \brief De-initialization of the module */
 void SUMO_Deinit(void);
-
-
 
 #endif /* SOURCES_SUMO_H_ */
