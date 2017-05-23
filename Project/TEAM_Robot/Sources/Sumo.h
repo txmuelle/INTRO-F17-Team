@@ -46,8 +46,6 @@ typedef enum {
 	SUMO_STATE_ERROR,
 } Sumo_State;
 
-
-
 /*!
  * \brief Returns the actual State of Sumo.
  * \return Actual State
@@ -71,6 +69,7 @@ uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled,
 void SUMO_Start1Sumo(void);
 void SUMO_StartSumo(void);
 void SUMO_StopSumo(void);
+void SUMO_calibrate(void);
 
 /* \brief is Sumo running?
  * \return true if Sumo is runing

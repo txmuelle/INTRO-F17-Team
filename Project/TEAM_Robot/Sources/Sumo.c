@@ -97,6 +97,10 @@ void SUMO_StartSumo(void) {
 
 }
 
+void SUMO_calibrate(void) {
+
+}
+
 /*! \brief Stops Sumo */
 void SUMO_StopSumo(void) {
 
@@ -143,14 +147,18 @@ static void SumoTask(void *pvParameters) {
 				TURN_TurnAngle(180, NULL);
 				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
+				if (DIST_CheckSurrounding() < 13) {
+					DRV_SetMode(DRV_MODE_POS);
+					DRV_SetPos(500, 500);
+				}
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(800, 800);
 			}
 #endif
 		}
 			break;
 		case SUMO_STATE_SEARCH_OPPONENT: {
-
 			/*! \todo  */
-
 
 		}
 			break;
