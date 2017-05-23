@@ -15,30 +15,30 @@
 
 /* check local platform configuration */
 #if PL_LOCAL_CONFIG_BOARD_IS_ROBO
-  #define PL_CONFIG_BOARD_IS_FRDM     (0)
-  #define PL_CONFIG_BOARD_IS_REMOTE   (0)
-  #define PL_CONFIG_BOARD_IS_ROBO     (1)
-  #if defined(PEcfg_RoboV2)
-    #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
-    #define PL_CONFIG_BOARD_IS_ROBO_V2  (1)
-  #else
-    #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
-    #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
-  #endif
-#elif PL_LOCAL_CONFIG_BOARD_IS_FRDM
-  #define PL_CONFIG_BOARD_IS_FRDM     (1)
-  #define PL_CONFIG_BOARD_IS_REMOTE   (0)
-  #define PL_CONFIG_BOARD_IS_ROBO     (0)
-  #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
-  #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
-#elif PL_LOCAL_CONFIG_BOARD_IS_REMOTE
-  #define PL_CONFIG_BOARD_IS_FRDM     (0)
-  #define PL_CONFIG_BOARD_IS_REMOTE   (1)
-  #define PL_CONFIG_BOARD_IS_ROBO     (0)
-  #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
-  #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
+#define PL_CONFIG_BOARD_IS_FRDM     (0)
+#define PL_CONFIG_BOARD_IS_REMOTE   (0)
+#define PL_CONFIG_BOARD_IS_ROBO     (1)
+#if defined(PEcfg_RoboV2)
+#define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
+#define PL_CONFIG_BOARD_IS_ROBO_V2  (1)
 #else
-  #error "One board type has to be defined in Platform_Local.h!"
+#define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
+#define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
+#endif
+#elif PL_LOCAL_CONFIG_BOARD_IS_FRDM
+#define PL_CONFIG_BOARD_IS_FRDM     (1)
+#define PL_CONFIG_BOARD_IS_REMOTE   (0)
+#define PL_CONFIG_BOARD_IS_ROBO     (0)
+#define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
+#define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
+#elif PL_LOCAL_CONFIG_BOARD_IS_REMOTE
+#define PL_CONFIG_BOARD_IS_FRDM     (0)
+#define PL_CONFIG_BOARD_IS_REMOTE   (1)
+#define PL_CONFIG_BOARD_IS_ROBO     (0)
+#define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
+#define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
+#else
+#error "One board type has to be defined in Platform_Local.h!"
 #endif
 
 #define PL_CONFIG_HAS_SUMO     (1 && PL_LOCAL_CONFIG_BOARD_IS_ROBO)
@@ -97,8 +97,13 @@
 
 #define PL_CONFIG_HAS_BATTERY_ADC       (1 && !defined(PL_LOCAL_CONFIG_HAS_BATTERY_ADC_DISABLED) && PL_CONFIG_BOARD_IS_ROBO)
 
+#define PL_CONFIG_HAS_SNAKE_GAME        (1 && !defined(PL_CONFIG_HAS_SNAKE_GAME_DISABLED))
 
-#define PL_CONFIG_HAS_SNAKE_GAME           (1 && !defined(PL_CONFIG_HAS_SNAKE_GAME_DISABLED))
+/*ToF Sensor*/
+#define PL_HAS_DISTANCE_SENSOR			(1 && !defined(PL_HAS_DISTANCE_SENSOR_DISABLED))
+#define PL_HAS_TOF_SENSOR				(1 && !defined(PL_HAS_TOF_SENSOR_DISABLED))
+//#define PL_HAS_SIDE_DISTANCE			(1 && !defined(PL_HAS_SIDE_DISTANCE_DISABLED))
+
 /*!
  * \brief Driver de-initialization
  */
