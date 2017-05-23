@@ -3,7 +3,7 @@
   <Header>
     <Name>TEAM_Robot</Name>
     <SavedBy>Erich Styger</SavedBy>
-    <ModificationStamp>209</ModificationStamp>
+    <ModificationStamp>211</ModificationStamp>
     <Date>2016-02-29</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>778</ProjectCompNumb>
+    <ProjectCompNumb>789</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -92,7 +92,7 @@
   <UserFolder>
     <UserFolderName />
     <NodeName>ToF</NodeName>
-    <CompNumb>765</CompNumb>
+    <CompNumb>776</CompNumb>
     <FolderType>Beans</FolderType>
     <ExpandedAll>true</ExpandedAll>
   </UserFolder>
@@ -10395,19 +10395,19 @@
       <Value52>true</Value52>
       <ItemId53>701</ItemId53>
       <Value53>true</Value53>
-      <ItemId54>766</ItemId54>
+      <ItemId54>777</ItemId54>
       <Value54>true</Value54>
-      <ItemId55>768</ItemId55>
+      <ItemId55>779</ItemId55>
       <Value55>true</Value55>
-      <ItemId56>770</ItemId56>
+      <ItemId56>781</ItemId56>
       <Value56>true</Value56>
-      <ItemId57>772</ItemId57>
+      <ItemId57>783</ItemId57>
       <Value57>true</Value57>
-      <ItemId58>774</ItemId58>
+      <ItemId58>785</ItemId58>
       <Value58>true</Value58>
-      <ItemId59>776</ItemId59>
+      <ItemId59>787</ItemId59>
       <Value59>true</Value59>
-      <ItemId60>777</ItemId60>
+      <ItemId60>788</ItemId60>
       <Value60>true</Value60>
     </BoolList_BeanConfig>
     <BoolList_TaskConfig>
@@ -10592,19 +10592,19 @@
       <Value52>true</Value52>
       <ItemId53>701</ItemId53>
       <Value53>true</Value53>
-      <ItemId54>766</ItemId54>
+      <ItemId54>777</ItemId54>
       <Value54>true</Value54>
-      <ItemId55>768</ItemId55>
+      <ItemId55>779</ItemId55>
       <Value55>true</Value55>
-      <ItemId56>770</ItemId56>
+      <ItemId56>781</ItemId56>
       <Value56>true</Value56>
-      <ItemId57>772</ItemId57>
+      <ItemId57>783</ItemId57>
       <Value57>true</Value57>
-      <ItemId58>774</ItemId58>
+      <ItemId58>785</ItemId58>
       <Value58>true</Value58>
-      <ItemId59>776</ItemId59>
+      <ItemId59>787</ItemId59>
       <Value59>true</Value59>
-      <ItemId60>777</ItemId60>
+      <ItemId60>788</ItemId60>
       <Value60>true</Value60>
     </BoolList_BeanConfig>
     <BoolList_TaskConfig>
@@ -17274,8 +17274,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <Value>true</Value>
+        <Index>1</Index>
+        <Value>false</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>StatusColonPos</ItemSymbol>
@@ -50151,7 +50151,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>42</Value>
+        <Value>11</Value>
         <Base>DEC</Base>
       </ItemState>
       <ItemState>
@@ -66352,7 +66352,7 @@
     <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
     <BeanType>BitIO</BeanType>
     <Name>TofPwr</Name>
-    <CompNumb>766</CompNumb>
+    <CompNumb>777</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>BITIO</IconName>
@@ -66398,7 +66398,7 @@
           <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
           <BeanType>BitIO_LDD</BeanType>
           <Name>BitIoLdd18</Name>
-          <CompNumb>767</CompNumb>
+          <CompNumb>778</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>PORT_LDD</IconName>
@@ -66942,7 +66942,7 @@
     <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
     <BeanType>BitIO</BeanType>
     <Name>TofCE1</Name>
-    <CompNumb>768</CompNumb>
+    <CompNumb>779</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>BITIO</IconName>
@@ -66988,7 +66988,7 @@
           <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
           <BeanType>BitIO_LDD</BeanType>
           <Name>BitIoLdd19</Name>
-          <CompNumb>769</CompNumb>
+          <CompNumb>780</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>PORT_LDD</IconName>
@@ -67532,7 +67532,7 @@
     <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
     <BeanType>BitIO</BeanType>
     <Name>TofCE2</Name>
-    <CompNumb>770</CompNumb>
+    <CompNumb>781</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>BITIO</IconName>
@@ -67578,7 +67578,7 @@
           <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
           <BeanType>BitIO_LDD</BeanType>
           <Name>BitIoLdd24</Name>
-          <CompNumb>771</CompNumb>
+          <CompNumb>782</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>PORT_LDD</IconName>
@@ -68122,7 +68122,7 @@
     <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
     <BeanType>BitIO</BeanType>
     <Name>TofCE3</Name>
-    <CompNumb>772</CompNumb>
+    <CompNumb>783</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>BITIO</IconName>
@@ -68168,7 +68168,7 @@
           <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
           <BeanType>BitIO_LDD</BeanType>
           <Name>BitIoLdd25</Name>
-          <CompNumb>773</CompNumb>
+          <CompNumb>784</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>PORT_LDD</IconName>
@@ -68712,7 +68712,7 @@
     <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
     <BeanType>BitIO</BeanType>
     <Name>TofCE4</Name>
-    <CompNumb>774</CompNumb>
+    <CompNumb>785</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>BITIO</IconName>
@@ -68758,7 +68758,7 @@
           <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
           <BeanType>BitIO_LDD</BeanType>
           <Name>BitIoLdd26</Name>
-          <CompNumb>775</CompNumb>
+          <CompNumb>786</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>PORT_LDD</IconName>
@@ -69302,7 +69302,7 @@
     <ComponentUUID>com.freescale.processorexpert.ldd.i2c_ldd</ComponentUUID>
     <BeanType>I2C_LDD</BeanType>
     <Name>I2C1</Name>
-    <CompNumb>776</CompNumb>
+    <CompNumb>787</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>I2C_LDD</IconName>
@@ -70617,7 +70617,7 @@
     <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>GenericI2C</BeanType>
     <Name>GI2C1</Name>
-    <CompNumb>777</CompNumb>
+    <CompNumb>788</CompNumb>
     <CompEnabled>true</CompEnabled>
     <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
     <IconName>Generic2C</IconName>
