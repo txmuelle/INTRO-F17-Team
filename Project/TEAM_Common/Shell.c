@@ -82,6 +82,9 @@
 #endif
 #include "KIN1.h"
 #include "TmDt1.h"
+#if PL_HAS_DISTANCE_SENSOR
+#include "Distance.h"
+#endif
 
 #if CLS1_DEFAULT_SERIAL
 #error "Default is RTT. Disable any Shell default connection in the component propeties, as we are setting it a runtime!"
@@ -222,6 +225,9 @@ SHELL_ParseCommand, /* our own module parser */
 #if PL_CONFIG_HAS_REFLECTANCE
 #if REF_PARSE_COMMAND_ENABLED
 		REF_ParseCommand,
+#endif
+#if PL_HAS_DISTANCE_SENSOR
+		DIST_ParseCommand,
 #endif
 #endif
 #if PL_CONFIG_HAS_MOTOR
