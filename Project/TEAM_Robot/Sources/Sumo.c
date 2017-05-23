@@ -145,11 +145,14 @@ static void SumoTask(void *pvParameters) {
 			if (WhiteLineDetected()) {
 				DRV_SetSpeed(0, 0);
 				TURN_TurnAngle(180, NULL);
+				if (DIST_NearFrontObstacle(50)) {
+					TURN_TurnAngle(30, NULL);
+					DRV_SetSpeed(2000, 2000);
+				}
 				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
-				if (DIST_CheckSurrounding() < 13) {
-					DRV_SetMode(DRV_MODE_POS);
-					DRV_SetPos(500, 500);
+				if (DIST_NearFrontObstacle(50)) {
+					TURN_TurnAngle(30, NULL);
 				}
 				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
