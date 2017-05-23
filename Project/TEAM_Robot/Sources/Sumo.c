@@ -71,14 +71,12 @@ void Sumo_EventHandler(EVNT_Handle event) {
 }
 #endif /* PL_CONFIG_HAS_EVENTS */
 
-
 /* \brief is Sumo running?
  * \return true if Sumo is running
  */
 bool SUMO_IsRunningSumo(void) {
 	return SumoRunFlag;
 }
-
 
 /*! \brief Start Sumo with 2.Strategic */
 void SUMO_Start1Sumo(void) {
@@ -89,12 +87,11 @@ void SUMO_Start1Sumo(void) {
 
 /*! \brief Start Sumo with 1.Strategic */
 void SUMO_StartSumo(void) {
-	if (!SumoRunFlag){
+	if (!SumoRunFlag) {
 		//Todo search Opponent here
 		SumoRunFlag = TRUE;
 		SUMO_State = SUMO_STATE_ATTACKE;
-	}
-		else{
+	} else {
 		/*ERROR: Sumo is already running*/
 	}
 
@@ -131,18 +128,17 @@ static void SumoTask(void *pvParameters) {
 
 		case SUMO_STATE_ATTACKE: {
 
-
 			if (RTOS_ButtonPressed) {
 				RTOS_ButtonPressed = FALSE;
 #if PL_CONFIG_HAS_MOTOR
-			    DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
 #endif
 			}
 #if PL_CONFIG_HAS_MOTOR
 			if (WhiteLineDetected()) {
 				DRV_SetSpeed(0, 0);
-				TURN_TurnAngle(180,NULL);
+				TURN_TurnAngle(180, NULL);
 				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
 			}
@@ -177,23 +173,11 @@ static void SumoTask(void *pvParameters) {
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 			DRV_SetMode(DRV_MODE_SPEED);
-			DRV_SetSpeed(0,0);
+			DRV_SetSpeed(0, 0);
 #endif
 			/* turn the Sumo off */
 		}
 			break;
-		case SUMO_STATE_SEARCH_BORDER: {
-			//search border
-			if (getHasWhiteBorder() && (afterCalib == 1)) {
-				DRV_SetMode(DRV_MODE_POS);
-				DRV_SetPos(-1000, -1000);
-				TURN_TurnAngle((int16_t)90, NULL);
-				//DRV_SetPos(-1000, -1000);
-				afterCalib = 0;
-			}
-		}
-			break;
-
 		default:
 
 #if PL_CONFIG_HAS_MOTOR
