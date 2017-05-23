@@ -82,6 +82,10 @@
 #include "Sumo.h"
 #endif
 
+#if PL_HAS_DISTANCE_SENSOR
+#include "Distance.h"
+#endif
+
 void PL_Init(void) {
 #if PL_CONFIG_HAS_LEDS
 	LED_Init();
@@ -158,6 +162,9 @@ void PL_Init(void) {
 #if PL_CONFIG_HAS_SUMO /*! \todo */
 	SUMO_Init();
 #endif
+#if PL_HAS_DISTANCE_SENSOR
+	DIST_Init();
+#endif
 }
 
 void PL_Deinit(void) {
@@ -232,8 +239,5 @@ void PL_Deinit(void) {
 #endif
 #if PL_CONFIG_HAS_SUMO /*! \todo */
 	SUMO_Deinit();
-#endif
-#if PL_HAS_DISTANCE_SENSOR
-	DIST_Init();
 #endif
 }
