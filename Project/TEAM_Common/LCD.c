@@ -41,7 +41,7 @@ typedef enum {
   LCD_MENU_ID_GAMES,
 	LCD_MENU_ID_SNAKE,
   LCD_MENU_ID_SUMO,
-    LCD_MENU_ID_CALIB,
+    LCD_MENU_ID_SUMO_CALIB,
     LCD_MENU_ID_SUMO_START,
 	LCD_MENU_ID_SUMO_START1,
 	LCD_MENU_ID_SUMO_STOP,
@@ -54,7 +54,7 @@ static struct {
   struct {
     bool dataValid;
     bool isRunning;
-    uint8_t str[sizeof("???????????")+1]; /* used to store menu string, either "Start" or "Stop" */
+    //uint8_t str[sizeof("???????????")+1]; /* used to store menu string, either "Start" or "Stop" */
   } sumo;
   struct {
     bool dataValid;
@@ -160,49 +160,51 @@ static LCDMenu_StatusFlags RobotRemoteMenuHandler(const struct LCDMenu_MenuItem_
         *dataP = remoteValues.tof.str;
       }
       flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-    } else if (item->id==LCD_MENU_ID_SUMO_START) {
-      if (remoteValues.sumo.dataValid) { /* have valid data */
-        if (remoteValues.sumo.isRunning) {
-          /*nothing todo Sumo is already running*/
-        } else {
-          UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start");
-        }
-      } else { /* request values */
-        (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_START, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
-        /* use ??? for now until we get the response */
-        UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start?");
-      }
-      *dataP = remoteValues.sumo.str;
-      flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-    } else if (item->id==LCD_MENU_ID_SUMO_START1) {
-        if (remoteValues.sumo.dataValid) { /* have valid data */
-          if (remoteValues.sumo.isRunning) {
-            /*nothing todo Sumo is already running*/
-          } else {
-            UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start");
-          }
-        } else { /* request values */
-          (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_START1, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
-          /* use ??? for now until we get the response */
-          UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start?");
-        }
-        *dataP = remoteValues.sumo.str;
-        flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-      } else if (item->id==LCD_MENU_ID_SUMO_STOP) {
-          if (remoteValues.sumo.dataValid) { /* have valid data */
-            if (remoteValues.sumo.isRunning) {
-              UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Stop");
-            } else {
-              /*nothing to do Sumo is */
-            }
-          } else { /* request values */
-            (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_STOP, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
-            /* use ??? for now until we get the response */
-            UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start/Stop?");
-          }
-          *dataP = remoteValues.sumo.str;
-          flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
-        }else if (item->id==LCD_MENU_ID_BATTERY_VOLTAGE) {
+    }
+//      else if (item->id==LCD_MENU_ID_SUMO_START) {
+//      if (remoteValues.sumo.dataValid) { /* have valid data */
+//        if (remoteValues.sumo.isRunning) {
+//          /*nothing todo Sumo is already running*/
+//        } else {
+//          UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start");
+//        }
+//      } else { /* request values */
+//        (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_START, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
+//        /* use ??? for now until we get the response */
+//        UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start?");
+//      }
+//      *dataP = remoteValues.sumo.str;
+//      flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+//    } else if (item->id==LCD_MENU_ID_SUMO_START1) {
+//        if (remoteValues.sumo.dataValid) { /* have valid data */
+//          if (remoteValues.sumo.isRunning) {
+//            /*nothing todo Sumo is already running*/
+//          } else {
+//            UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start1");
+//          }
+//        } else { /* request values */
+//          (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_START1, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
+//          /* use ??? for now until we get the response */
+//          UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Start1?");
+//        }
+//        *dataP = remoteValues.sumo.str;
+//        flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+//      } else if (item->id==LCD_MENU_ID_SUMO_STOP) {
+//          if (remoteValues.sumo.dataValid) { /* have valid data */
+//            if (remoteValues.sumo.isRunning) {
+//              UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Stop");
+//            } else {
+//              /*nothing to do Sumo is */
+//            }
+//          } else { /* request values */
+//            (void)RNETA_SendIdValuePairMessage(RAPP_MSG_TYPE_QUERY_VALUE, RAPP_MSG_TYPE_DATA_ID_STOP, 0, RNWK_ADDR_BROADCAST, RPHY_PACKET_FLAGS_NONE);
+//            /* use ??? for now until we get the response */
+//            UTIL1_strcpy(remoteValues.sumo.str, sizeof(remoteValues.sumo.str), (uint8_t*)"Stop?");
+//          }
+//          *dataP = remoteValues.sumo.str;
+//       flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
+//         }
+    else if (item->id==LCD_MENU_ID_BATTERY_VOLTAGE) {
       UTIL1_strcpy(remoteValues.battVoltage.str, sizeof(remoteValues.battVoltage.str), (uint8_t*)"Batt: ");
       if (remoteValues.battVoltage.dataValid) { /* use valid data */
         UTIL1_strcatNum32sDotValue100(remoteValues.battVoltage.str, sizeof(remoteValues.battVoltage.str), remoteValues.battVoltage.centiV);
@@ -215,16 +217,25 @@ static LCDMenu_StatusFlags RobotRemoteMenuHandler(const struct LCDMenu_MenuItem_
       *dataP = remoteValues.battVoltage.str;
       flags |= LCDMENU_STATUS_FLAGS_HANDLED|LCDMENU_STATUS_FLAGS_UPDATE_VIEW;
     }
-  } else if (event==LCDMENU_EVENT_ENTER || event==LCDMENU_EVENT_RIGHT) { /* force update */
+  } else if (event==LCDMENU_EVENT_ENTER ) { /* force update || event==LCDMENU_EVENT_RIGHT*/
     uint16_t dataID = RAPP_MSG_TYPE_DATA_ID_NONE; /* default value, will be overwritten below */
     uint8_t msgType = 0;
     uint32_t value = 0;
 
     switch(item->id) {
+		case LCD_MENU_ID_SUMO_CALIB:
+		  if (event==LCDMENU_EVENT_ENTER) {
+			  msgType = RAPP_MSG_TYPE_REQUEST_SET_VALUE;
+			  value = 0; /* don't care */
+		  } else {
+
+		  }
+		  dataID = RAPP_MSG_TYPE_DATA_ID_CALIB;
+		  break;
       case LCD_MENU_ID_SUMO_START:
         if (event==LCDMENU_EVENT_ENTER) {
           msgType = RAPP_MSG_TYPE_REQUEST_SET_VALUE;
-          value = 1; /* start*/
+          value = 0; /* don't care */
         } else {
         	/* Sumo already running*/
         }
@@ -233,7 +244,7 @@ static LCDMenu_StatusFlags RobotRemoteMenuHandler(const struct LCDMenu_MenuItem_
       case LCD_MENU_ID_SUMO_START1:
         if (event==LCDMENU_EVENT_ENTER) {
           msgType = RAPP_MSG_TYPE_REQUEST_SET_VALUE;
-          value = 2; /* start*/
+          value = 0; /* don't care */
         } else {
         	/* Sumo already running*/
         }
@@ -241,10 +252,10 @@ static LCDMenu_StatusFlags RobotRemoteMenuHandler(const struct LCDMenu_MenuItem_
         break;
       case LCD_MENU_ID_SUMO_STOP:
         if (event==LCDMENU_EVENT_ENTER) {
-        	/* Sumo already stopped*/
+            msgType = RAPP_MSG_TYPE_REQUEST_SET_VALUE;
+            value = 0; /* don't care */
         } else {
-          msgType = RAPP_MSG_TYPE_QUERY_VALUE;
-          value = 0; /* stop */
+
         }
         dataID = RAPP_MSG_TYPE_DATA_ID_STOP;
         break;
@@ -293,13 +304,14 @@ static const LCDMenu_MenuItem menus[] =
 {/* id,                                     grp, pos,   up,                       down,                             text,           callback                      flags                  */
     {LCD_MENU_ID_MAIN,                        0,   0,   LCD_MENU_ID_NONE,         LCD_MENU_ID_BACKLIGHT,            "General",      NULL,                         LCDMENU_MENU_FLAGS_NONE},
 	{LCD_MENU_ID_GAMES,                       0,   1,   LCD_MENU_ID_NONE,         LCD_MENU_ID_SNAKE,                "Games",        NULL,                         LCDMENU_MENU_FLAGS_NONE},
-    {LCD_MENU_ID_SUMO,                        0,   2,   LCD_MENU_ID_NONE,         LCD_MENU_ID_CALIB,                "Sumo Battle",  NULL,              			  LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_CALIB,                     3,   0,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Calibrate",    RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_SUMO_START,                3,   1,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Sumo Start",   RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_SUMO_STOP,                 3,   2,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Sumo Stop",    RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_BATTERY_VOLTAGE,           3,   3,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 NULL,           RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_MINT_TOF_SENSOR,           3,   4,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 NULL,           RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
-	  {LCD_MENU_ID_SNAKE,                     2,   0,   LCD_MENU_ID_GAMES,         LCD_MENU_ID_NONE,                 "Snake",        SnakeMenuHandler,             LCDMENU_MENU_FLAGS_NONE},
+    {LCD_MENU_ID_SUMO,                        0,   2,   LCD_MENU_ID_NONE,         LCD_MENU_ID_SUMO_CALIB,           "Sumo Battle",  NULL,              			  LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SUMO_CALIB,                3,   0,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Calibrate",    RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SUMO_START,                3,   1,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Start 1",      RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SUMO_START1,               3,   2,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Start 2",      RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SUMO_STOP,                 3,   3,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 "Stop",         RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_BATTERY_VOLTAGE,           3,   4,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 NULL,           RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_MINT_TOF_SENSOR,           3,   5,   LCD_MENU_ID_SUMO,         LCD_MENU_ID_NONE,                 NULL,           RobotRemoteMenuHandler,       LCDMENU_MENU_FLAGS_NONE},
+	  {LCD_MENU_ID_SNAKE,                     2,   0,   LCD_MENU_ID_GAMES,        LCD_MENU_ID_NONE,                 "Snake",        SnakeMenuHandler,             LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_BACKLIGHT,                 1,   0,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 NULL,           BackLightMenuHandler,         LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_NUM_VALUE,                 1,   1,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 NULL,           ValueChangeHandler,           LCDMENU_MENU_FLAGS_EDITABLE},
 };

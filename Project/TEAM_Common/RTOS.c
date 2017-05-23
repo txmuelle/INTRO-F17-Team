@@ -50,7 +50,7 @@ static void AppTask(void* param) {
 	const int *whichLED = (int*) param;
 	bool start = FALSE;
 
-	REF_LineKind
+	//REF_LineKind
 	RTOS_ButtonPressed = FALSE;
 	for (;;) {
 		if (*whichLED == 1) {

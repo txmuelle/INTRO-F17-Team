@@ -20,7 +20,7 @@ typedef enum {
   RAPP_MSG_TYPE_ACCEL = 0x03,
   RAPP_MSG_TYPE_DATA = 0x04,
   RAPP_MSG_TYPE_JOYSTICK_XY = 0x05,
-  RAPP_MSG_TYPE_JOYSTICK_BTN = 0x54, /* Joystick button message (data is one byte: 'A', 'B', ... 'F' and 'K') */
+  RAPP_MSG_TYPE_JOYSTICK_BTN = 0x54, 			/* Joystick button message (data is one byte: 'A', 'B', ... 'F' and 'K') */
   RAPP_MSG_TYPE_REQUEST_SET_VALUE = 0x55,       /* id16:val32, request to set a value for id: 16bit ID followed by 32bit value */
   RAPP_MSG_TYPE_NOTIFY_VALUE = 0x56,            /* id16:val32, notification about a value: 16bit ID followed by 32bit value */
   RAPP_MSG_TYPE_QUERY_VALUE = 0x57,             /* id16, request to query for a value: data ID is a 16bit ID */
@@ -35,10 +35,10 @@ typedef enum {
   RAPP_MSG_TYPE_DATA_ID_TOF_VALUES = 4,     /* ToF values: four 8bit values */
   RAPP_MSG_TYPE_DATA_ID_BATTERY_V = 7,      /* Battery voltage */
   RAPP_MSG_TYPE_DATA_ID_PID_FW_SPEED = 8,   /* PID forward speed */
-  RAPP_MSG_TYPE_DATA_ID_STOP = 9,     /* start/stop robot */
-  RAPP_MSG_TYPE_DATA_ID_START = 10,     /* start/stop robot */
-  RAPP_MSG_TYPE_DATA_ID_START1 = 11,     /* start/stop robot */
-
+  RAPP_MSG_TYPE_DATA_ID_CALIB = 9, 			/* Calibrate */
+  RAPP_MSG_TYPE_DATA_ID_START = 10,     	/* start robot */
+  RAPP_MSG_TYPE_DATA_ID_START1 = 11,     	/* start1 robot */
+  RAPP_MSG_TYPE_DATA_ID_STOP = 12,     		/* stop robot */
   /*! \todo extend as needed */
 } RAPP_MSG_DateIDType;
 

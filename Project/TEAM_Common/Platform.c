@@ -240,4 +240,7 @@ void PL_Deinit(void) {
 #if PL_CONFIG_HAS_SUMO /*! \todo */
 	SUMO_Deinit();
 #endif
+#if PL_HAS_DISTANCE_SENSOR
+	DIST_Deinit();
+#endif
 }

@@ -301,6 +301,11 @@ uint8_t REMOTE_HandleRemoteRxMessage(RAPP_MSG_Type type, uint8_t size, uint8_t *
     case RAPP_MSG_TYPE_REQUEST_SET_VALUE:
       id = UTIL1_GetValue16LE(data); /* extract 16bit ID (little endian) */
       /*!\ todo handle message*/
+		if (id == RAPP_MSG_TYPE_DATA_ID_CALIB) {
+			*handled = FALSE;
+			beep = TRUE;
+			SUMO_calibrate();
+		}
 		if (id == RAPP_MSG_TYPE_DATA_ID_STOP) {
 			*handled = FALSE;
 			beep = TRUE;

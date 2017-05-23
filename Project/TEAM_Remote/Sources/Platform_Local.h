@@ -68,5 +68,8 @@
 #define PL_LOCAL_CONFIG_HAS_BLUETOOTH_DISABLED            /* disable Bluetooth */
 #define PL_LOCAL_CONFIG_HAS_BUZZER_DISABLED               /* disable buzzer (only on robot) */
 #define PL_LOCAL_CONFIG_HAS_BATTERY_ADC_DISABLED          /* disable battery ADC */
+/*ToF sensor*/
+#define PL_HAS_DISTANCE_SENSOR_DISABLED
+#define PL_HAS_TOF_SENSOR_DISABLED
 
 #endif /* SOURCES_PLATFORM_LOCAL_H_ */

@@ -262,7 +262,7 @@ void RNETA_Init(void) {
   if (FRTOS1_xTaskCreate(
         RadioTask,  /* pointer to the task */
         "Radio", /* task name for kernel awareness debugging */
-		600/sizeof(StackType_t), /* task stack size *///old configMINIMAL_STACK_SIZE+50,
+		900/sizeof(StackType_t), /* task stack size *///old configMINIMAL_STACK_SIZE+50,
         (void*)NULL, /* optional task startup argument */
         tskIDLE_PRIORITY+2,  /* initial priority */
         (xTaskHandle*)NULL /* optional task handle to create */
