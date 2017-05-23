@@ -6,231 +6,234 @@
 
 #include "Platform.h"
 #if PL_CONFIG_HAS_LEDS
-  #include "LED.h"
+#include "LED.h"
 #endif
 #if PL_CONFIG_HAS_EVENTS
-  #include "Event.h"
+#include "Event.h"
 #endif
 #if PL_CONFIG_HAS_TIMER
-  #include "Timer.h"
+#include "Timer.h"
 #endif
 #if PL_CONFIG_HAS_KEYS
-  #include "Keys.h"
+#include "Keys.h"
 #endif
 #if PL_CONFIG_HAS_TRIGGER
-  #include "Trigger.h"
+#include "Trigger.h"
 #endif
 #if PL_CONFIG_HAS_BUZZER
-  #include "Buzzer.h"
+#include "Buzzer.h"
 #endif
 #if PL_CONFIG_HAS_DEBOUNCE
-  #include "Debounce.h"
-  #include "KeyDebounce.h"
+#include "Debounce.h"
+#include "KeyDebounce.h"
 #endif
 #if PL_CONFIG_HAS_RTOS
-  #include "RTOS.h"
+#include "RTOS.h"
 #endif
 #if PL_CONFIG_HAS_SHELL
-  #include "Shell.h"
+#include "Shell.h"
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE
-  #include "ShellQueue.h"
+#include "ShellQueue.h"
 #endif
 #if PL_CONFIG_HAS_SEMAPHORE
-  #include "Sem.h"
+#include "Sem.h"
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  #include "Reflectance.h"
+#include "Reflectance.h"
 #endif
 #if PL_CONFIG_HAS_MOTOR
-  #include "Motor.h"
+#include "Motor.h"
 #endif
 #if PL_CONFIG_HAS_MOTOR_TACHO
-  #include "Tacho.h"
+#include "Tacho.h"
 #endif
 #if PL_CONFIG_HAS_PID
-  #include "Pid.h"
+#include "Pid.h"
 #endif
 #if PL_CONFIG_HAS_DRIVE
-  #include "Drive.h"
+#include "Drive.h"
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
-  #include "LineFollow.h"
+#include "LineFollow.h"
 #endif
 #if PL_CONFIG_HAS_RADIO
-  #include "RNet_App.h"
+#include "RNet_App.h"
 #endif
 #if PL_CONFIG_HAS_REMOTE
-  #include "Remote.h"
+#include "Remote.h"
 #endif
 #if PL_CONFIG_HAS_TURN
-  #include "Turn.h"
+#include "Turn.h"
 #endif
 #if PL_CONFIG_HAS_CONFIG_NVM
-  #include "NVM_Config.h"
+#include "NVM_Config.h"
 #endif
 #if PL_CONFIG_HAS_LINE_MAZE
-  #include "Maze.h"
+#include "Maze.h"
 #endif
 #if PL_CONFIG_HAS_LCD
-  #include "LCD.h"
+#include "LCD.h"
 #endif
 #if PL_CONFIG_HAS_BATTERY_ADC
-  #include "Battery.h"
+#include "Battery.h"
 #endif
 #if PL_CONFIG_HAS_SUMO /*! \todo */
-  #include "Sumo.h"
+#include "Sumo.h"
 #endif
 
 void PL_Init(void) {
 #if PL_CONFIG_HAS_LEDS
-  LED_Init();
+	LED_Init();
 #endif
 #if PL_CONFIG_HAS_EVENTS
-  EVNT_Init();
+	EVNT_Init();
 #endif
 #if PL_CONFIG_HAS_TIMER
-  TMR_Init();
+	TMR_Init();
 #endif
 #if PL_CONFIG_HAS_KEYS
-  KEY_Init();
+	KEY_Init();
 #endif
 #if PL_CONFIG_HAS_TRIGGER
-  TRG_Init();
+	TRG_Init();
 #endif
 #if PL_CONFIG_HAS_BUZZER
-  BUZ_Init();
+	BUZ_Init();
 #endif
 #if PL_CONFIG_HAS_DEBOUNCE
-  KEYDBNC_Init();
+	KEYDBNC_Init();
 #endif
 #if PL_CONFIG_HAS_RTOS
-  RTOS_Init();
+	RTOS_Init();
 #endif
 #if PL_CONFIG_HAS_SHELL
-  SHELL_Init();
+	SHELL_Init();
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE
-  SQUEUE_Init();
+	SQUEUE_Init();
 #endif
 #if PL_CONFIG_HAS_SEMAPHORE
-  SEM_Init();
+	SEM_Init();
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  REF_Init();
+	REF_Init();
 #endif
 #if PL_CONFIG_HAS_MOTOR
-  MOT_Init();
+	MOT_Init();
 #endif
 #if PL_CONFIG_HAS_MOTOR_TACHO
-  TACHO_Init();
+	TACHO_Init();
 #endif
 #if PL_CONFIG_HAS_PID
-  PID_Init();
+	PID_Init();
 #endif
 #if PL_CONFIG_HAS_DRIVE
-  DRV_Init();
+	DRV_Init();
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
-  LF_Init();
+	LF_Init();
 #endif
 #if PL_CONFIG_HAS_RADIO
-  RNETA_Init();
+	RNETA_Init();
 #endif
 #if PL_CONFIG_HAS_REMOTE
-  REMOTE_Init();
+	REMOTE_Init();
 #endif
 #if PL_CONFIG_HAS_TURN
- TURN_Init();
+	TURN_Init();
 #endif
 #if PL_CONFIG_HAS_CONFIG_NVM
-  NVMC_Init();
+	NVMC_Init();
 #endif
 #if PL_CONFIG_HAS_LINE_MAZE
-  MAZE_Init();
+	MAZE_Init();
 #endif
 #if PL_CONFIG_HAS_LCD
-  LCD_Init();
+	LCD_Init();
 #endif
 #if PL_CONFIG_HAS_BATTERY_ADC
-  BATT_Init();
+	BATT_Init();
 #endif
 #if PL_CONFIG_HAS_SUMO /*! \todo */
-  SUMO_Init();
+	SUMO_Init();
 #endif
 }
 
 void PL_Deinit(void) {
 #if PL_CONFIG_HAS_BATTERY_ADC
-  BATT_Deinit();
+	BATT_Deinit();
 #endif
 #if PL_CONFIG_HAS_LCD
-  LCD_Deinit();
+	LCD_Deinit();
 #endif
 #if PL_CONFIG_HAS_LINE_MAZE
-  MAZE_Deinit();
+	MAZE_Deinit();
 #endif
 #if PL_CONFIG_HAS_CONFIG_NVM
-  NVMC_Deinit();
+	NVMC_Deinit();
 #endif
 #if PL_CONFIG_HAS_TURN
- TURN_Deinit();
+	TURN_Deinit();
 #endif
 #if PL_CONFIG_HAS_REMOTE
-  REMOTE_Deinit();
+	REMOTE_Deinit();
 #endif
 #if PL_CONFIG_HAS_RADIO
-  RNETA_Deinit();
+	RNETA_Deinit();
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
-  LF_Deinit();
+	LF_Deinit();
 #endif
 #if PL_CONFIG_HAS_DRIVE
-  DRV_Deinit();
+	DRV_Deinit();
 #endif
 #if PL_CONFIG_HAS_PID
-  PID_Deinit();
+	PID_Deinit();
 #endif
 #if PL_CONFIG_HAS_MOTOR_TACHO
-  TACHO_Deinit();
+	TACHO_Deinit();
 #endif
 #if PL_CONFIG_HAS_MOTOR
-  MOT_Deinit();
+	MOT_Deinit();
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
-  REF_Deinit();
+	REF_Deinit();
 #endif
 #if PL_CONFIG_HAS_SEMAPHORE
-  SEM_Deinit();
+	SEM_Deinit();
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE
-  SQUEUE_Deinit();
+	SQUEUE_Deinit();
 #endif
 #if PL_CONFIG_HAS_RTOS
-  RTOS_Deinit();
+	RTOS_Deinit();
 #endif
 #if PL_CONFIG_HAS_DEBOUNCE
-  KEYDBNC_Deinit();
+	KEYDBNC_Deinit();
 #endif
 #if PL_CONFIG_HAS_BUZZER
-  BUZ_Deinit();
+	BUZ_Deinit();
 #endif
 #if PL_CONFIG_HAS_TRIGGER
-  TRG_Deinit();
+	TRG_Deinit();
 #endif
 #if PL_CONFIG_HAS_KEYS
-  KEY_Deinit();
+	KEY_Deinit();
 #endif
 #if PL_CONFIG_HAS_TIMER
-  TMR_Deinit();
+	TMR_Deinit();
 #endif
 #if PL_CONFIG_HAS_EVENTS
-  EVNT_Init();
+	EVNT_Init();
 #endif
 #if PL_CONFIG_HAS_LEDS
-  LED_Deinit();
+	LED_Deinit();
 #endif
 #if PL_CONFIG_HAS_SUMO /*! \todo */
-  SUMO_Deinit();
+	SUMO_Deinit();
+#endif
+#if PL_HAS_DISTANCE_SENSOR
+	DIST_Init();
 #endif
 }

@@ -22,6 +22,7 @@
 #include "Turn.h"
 #include "Keys.h"
 #include "KeyDebounce.h"
+#include "Distance.h"
 #if PL_CONFIG_HAS_SHELL
 #include "CLS1.h"
 #endif
