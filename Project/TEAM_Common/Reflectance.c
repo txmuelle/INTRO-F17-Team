@@ -370,10 +370,7 @@ static REF_LineKind ReadLineKind(SensorTimeType val[REF_NOF_SENSORS]) {
 	for (i = 0; i < REF_NOF_SENSORS; i++) {
 		if (val[i] < REF_MIN_LINE_VAL) { /* smaller value? White seen! */
 			HAS_WHITE_L = 1;
-			//TURN_TurnAngle(90, NULL);
-			//TURN_TurnAngle(0, NULL);
 			break;
-			//drive
 		}
 	}
 	if (i == REF_NOF_SENSORS) { /* all sensors see 'black' */

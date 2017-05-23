@@ -133,6 +133,8 @@ static void SumoTask(void *pvParameters) {
 #if PL_CONFIG_HAS_MOTOR
 				DRV_SetMode(DRV_MODE_SPEED);
 				DRV_SetSpeed(800, 800);
+				//Search opponent
+
 #endif
 			}
 #if PL_CONFIG_HAS_MOTOR
@@ -145,9 +147,10 @@ static void SumoTask(void *pvParameters) {
 #endif
 		}
 			break;
-		case SUMO_STATE_SEARCH_OPONEND: {
+		case SUMO_STATE_SEARCH_OPPONENT: {
 
 			/*! \todo  */
+
 
 		}
 			break;
@@ -162,6 +165,7 @@ static void SumoTask(void *pvParameters) {
 				setState(3);
 				REF_CalibrateStartStop();
 				SUMO_State = SUMO_STATE_ATTACKE;
+				afterCalib = 0;
 			}
 			/*! \todo  */
 		}
@@ -184,7 +188,6 @@ static void SumoTask(void *pvParameters) {
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 30);
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), -30);
 #endif
-
 		}
 		FRTOS1_vTaskDelayUntil(&xLastWakeTime, 5/portTICK_PERIOD_MS);
 	} /* for */
